@@ -1,0 +1,24 @@
+---
+- name: Enable ovirt repositories
+  hosts: ovirt_machines
+  gather_facts: false
+  roles:
+    - ovirt_repository_installed
+
+- name: Install engine
+  hosts: engine
+  roles:
+    - engine_running
+
+- name: Prepare hosts
+  gather_facts: false
+  hosts: ovirt_nodes
+  roles:
+    - hosts_prepared
+
+- name: Add hosts, setup networking and storage
+  hosts: engine
+  roles:
+    - hosts_added
+    - networking_setup
+    - setup_storage

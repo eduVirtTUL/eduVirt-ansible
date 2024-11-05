@@ -1,0 +1,46 @@
+---
+- name: Authorize and add hosts
+  block:
+    # retries are needed beacuse of an issue with detecting the sdk by ansible immediatly after engine installation
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Add hosts
+      ovirt.ovirt.ovirt_host:
+        cluster: Default
+        name: "{{ item }}"
+        address: "{{ hostvars[item]['ansible_host'] }}"
+        public_key: true
+        ssh_port: 22
+        state: present
+        power_management_enabled: false
+        auth: "{{ ovirt_auth }}"
+        timeout: 1800 # 30 min
+        reboot_after_installation: false
+      timeout: 1800 # 30 min, has to be set in both places otherwise it breaks for some undocumented reason
+      with_items:
+        - "{{ groups['ovirt_nodes'] }}"
+      register: _add_hosts
+      async: 2100 # 35 min
+      poll: 0
+
+    - name: Wait for the nodes to be added
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: _jobs
+      until: _jobs.finished
+      delay: 60  # Check every 60 seconds.
+      retries: 40  # Retry up to 40 times. 40 retries of 60 seconds gives runtime of 40 min (not taking timeouts into consideration)
+      timeout: 60
+      with_items: "{{ _add_hosts.results }}"
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

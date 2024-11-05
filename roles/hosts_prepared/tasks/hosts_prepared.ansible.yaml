@@ -1,0 +1,23 @@
+---
+- name: Install ovirt cockpit package
+  ansible.builtin.package:
+    name: cockpit
+    state: present
+
+- name: Enable and start cockpit service
+  ansible.builtin.systemd_service:
+    name: cockpit.socket
+    enabled: true
+    state: started
+
+- name: Add cockpit service to firewall
+  ansible.posix.firewalld:
+    service: cockpit
+    state: enabled
+    permanent: true
+
+- name: Add engine public key
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: "{{ engine_public_ssh_key }}"

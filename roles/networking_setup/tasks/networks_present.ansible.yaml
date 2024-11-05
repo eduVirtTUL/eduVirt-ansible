@@ -1,0 +1,43 @@
+---
+- name: Authorize and setup cluster
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Add storage network to cluster
+      ovirt.ovirt.ovirt_network:
+        name: "{{ storage_network_name }}"
+        clusters:
+          - name: Default
+        data_center: Default
+        vm_network: false
+        auth: "{{ ovirt_auth }}"
+
+    - name: Add VM networks to cluster
+      ovirt.ovirt.ovirt_network:
+        name: "{{ item.name }}"
+        clusters:
+          - name: Default
+        data_center: Default
+        vm_network: true
+        vlan_tag: "{{ item.vlan_tag }}"
+        auth: "{{ ovirt_auth }}"
+      with_items: "{{ vm_networks }}"
+
+    - name: Remove vm traffic from mgmt
+      ovirt.ovirt.ovirt_network:
+        name: ovirtmgmt
+        data_center: Default
+        vm_network: false
+        auth: "{{ ovirt_auth }}"
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

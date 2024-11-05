@@ -1,0 +1,18 @@
+---
+- name: Install ovirt package
+  ansible.builtin.package:
+    name: ovirt-engine
+    state: present
+
+
+# https://github.com/oVirt/ovirt-ansible-collection/tree/master/roles/engine_setup
+- name: Engine setup
+  ansible.builtin.include_role:
+    name: ovirt.ovirt.engine_setup
+  vars:
+    ovirt_engine_setup_answer_file_path: templates/ovirt-answer.txt.j2
+    ovirt_engine_setup_version: 4.5
+    ovirt_engine_setup_offline: true
+
+- name: Reset connection to apply network changes
+  ansible.builtin.meta: reset_connection

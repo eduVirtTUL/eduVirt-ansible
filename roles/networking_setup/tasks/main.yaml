@@ -1,0 +1,12 @@
+---
+- name: Create necessary networks
+  ansible.builtin.import_tasks:
+    file: networks_present.ansible.yaml
+
+- name: Bind nics to macs
+  ansible.builtin.import_tasks:
+    file: match_macs_with_interfaces.ansible.yaml
+
+- name: Add networks to the nodes
+  ansible.builtin.import_tasks:
+    file: node_networks.ansible.yaml

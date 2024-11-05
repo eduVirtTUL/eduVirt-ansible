@@ -1,0 +1,26 @@
+- name: Authorize and add storage
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Add storage domain
+      ovirt.ovirt.ovirt_storage_domain:
+        state: present
+        host: "{{ groups['ovirt_nodes'][0] }}"
+        data_center: Default
+        name: storage_domain
+        nfs:
+          address: "{{ storage_address }}"
+          path: "{{ storage_path }}"
+        auth: "{{ ovirt_auth }}"
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

@@ -1,0 +1,13 @@
+- name: Add ovirt source repositories
+  ansible.builtin.dnf:
+    name: "{{ ovirt_engine_package_version }}"
+    state: present
+
+# Downgrade the libnl3 library because of the issues with the synchronization of the networks. See:
+# https://lists.ovirt.org/archives/list/users@ovirt.org/thread/XR7R3BFY6ZVNPC5MRT6PBRANGMBBQO2U/?sort=date
+# https://github.com/oVirt/vdsm/blob/master/lib/vdsm/network/netinfo/routes.py
+- name: Donwgrade libnl3
+  ansible.builtin.dnf:
+    name: libnl3-3.7.0-1.el9
+    allow_downgrade: true
+    state: present

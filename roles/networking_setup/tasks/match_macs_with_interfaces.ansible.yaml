@@ -1,0 +1,55 @@
+---
+# As it is working in the virtualized environment the mac adresses are not always assigned to the same nic.
+# Unfortunately the ovirt api/collection does not allow to select interfaces by mac adresses
+- name: Authorize and match macs with interfaces
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Retrieve info about nodes
+      ovirt.ovirt.ovirt_host_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "datacenter = Default"
+        follow: nics
+      register: result
+
+    - name: Match nics to mgmt macs
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      ansible.builtin.set_fact:
+        mgmt_interface: "{{ result | community.general.json_query(query) }}"
+      vars:
+        query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['mgmt_mac'] }}'].name | [0]"
+      with_items:
+        - "{{ groups['ovirt_nodes'] }}"
+
+    - name: Match nics to storage macs
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      ansible.builtin.set_fact:
+        storage_interface: "{{ result | community.general.json_query(query) }}"
+      vars:
+        query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['storage_mac'] }}'].name | [0]"
+      with_items:
+        - "{{ groups['ovirt_nodes'] }}"
+
+    - name: Match nics to vm network macs
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      ansible.builtin.set_fact:
+        vm_network_interface: "{{ result | community.general.json_query(query) }}"
+      vars:
+        query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['trunk_mac'] }}'].name | [0]"
+      with_items:
+        - "{{ groups['ovirt_nodes'] }}"
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

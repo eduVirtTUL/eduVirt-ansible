@@ -1,0 +1,37 @@
+- name: Authorize and add networks
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Setup storage network
+      ovirt.ovirt.ovirt_host_network:
+        name: "{{ item }}"
+        interface: "{{ hostvars[item]['storage_interface'] }}"
+        networks:
+          - name: "{{ storage_network_name }}"
+            address: "{{ hostvars[item]['storage_ip'] }}"
+            netmask: 255.255.255.0
+            boot_protocol: static
+        auth: "{{ ovirt_auth }}"
+      with_items: "{{ groups['ovirt_nodes'] }}"
+
+    - name: Setup vm networks
+      ovirt.ovirt.ovirt_host_network:
+        name: "{{ item[0] }}"
+        interface: "{{ hostvars[item[0]]['vm_network_interface'] }}"
+        networks:
+          - name: "{{ item[1].name }}"
+            boot_protocol: none
+        auth: "{{ ovirt_auth }}"
+      loop: "{{ groups['ovirt_nodes'] | ansible.builtin.product(vm_networks) }}"
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

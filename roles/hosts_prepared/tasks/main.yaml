@@ -1,0 +1,9 @@
+- name: Get engine public ssh key
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.import_tasks:
+    file: get_ssh_key.ansible.yaml
+
+- name: Install required packages on nodes
+  ansible.builtin.import_tasks:
+    file: hosts_prepared.ansible.yaml
