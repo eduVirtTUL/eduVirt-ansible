@@ -1,0 +1,21 @@
+ansible_ssh_private_key_file: ssh_keys/ssh_key
+ansible_user: root
+ovirt_engine_package_version: centos-release-ovirt45
+
+storage_domain_name: storage_domain
+storage_network_name: storage_network
+storage_address: 10.20.47.2
+storage_path: /export/storage2
+
+vm_networks:
+  - name: vm_network1
+    vlan_tag: 4041
+  - name: vm_network2
+    vlan_tag: 4042
+  - name: vm_network3
+    vlan_tag: 4043
+
+default_iso_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso
+# checksum is checked using sha256sum - make sure the file located under the url can be used in the program
+default_iso_checksum_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM
+default_iso_name: Fedora_Server_41

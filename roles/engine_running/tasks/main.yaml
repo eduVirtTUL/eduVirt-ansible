@@ -4,6 +4,11 @@
     name: ovirt-engine
     state: present
 
+- name: Change engine python interpreter version
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: /usr/bin/python3.11
+  when: ansible_python_version is ansible.builtin.version('3.11.0', '<')
+
 
 # https://github.com/oVirt/ovirt-ansible-collection/tree/master/roles/engine_setup
 - name: Engine setup
@@ -13,6 +18,3 @@
     ovirt_engine_setup_answer_file_path: templates/ovirt-answer.txt.j2
     ovirt_engine_setup_version: 4.5
     ovirt_engine_setup_offline: true
-
-- name: Reset connection to apply network changes
-  ansible.builtin.meta: reset_connection

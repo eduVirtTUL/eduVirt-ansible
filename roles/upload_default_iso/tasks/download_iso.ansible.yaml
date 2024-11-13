@@ -1,0 +1,24 @@
+- name: Download image checksum
+  ansible.builtin.get_url:
+    url: "{{ default_iso_checksum_location }}"
+    dest: "/root/{{ default_iso_name }}_checksum"
+    mode: '0400'
+  register: downloaded_checksum
+
+- name: Extract iso name from url
+  ansible.builtin.set_fact:
+    iso_filename: "{{ default_iso_location | regex_replace('.*/', '') }}"
+
+# Suppress failure of the stage regardless of the return of checksum check
+- name: Check existing iso checksum
+  ansible.builtin.command: "sha256sum -c {{ downloaded_checksum.dest }}"
+  register: checksum_result
+  changed_when: false
+  failed_when: false
+
+- name: Download default image
+  ansible.builtin.get_url:
+    url: "{{ default_iso_location }}"
+    dest: "/root/{{ iso_filename }}"
+    mode: '0400'
+  when: iso_filename in checksum_result.stderr

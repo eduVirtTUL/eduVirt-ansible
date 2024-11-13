@@ -16,9 +16,10 @@
   roles:
     - hosts_prepared
 
-- name: Add hosts, setup networking and storage
+- name: Add hosts, setup networking and storage, upload default iso
   hosts: engine
   roles:
     - hosts_added
     - networking_setup
     - setup_storage
+    - upload_default_iso

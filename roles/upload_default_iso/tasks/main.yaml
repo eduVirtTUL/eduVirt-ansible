@@ -1,0 +1,35 @@
+---
+- name: Install qemu-img
+  ansible.builtin.package:
+    name: qemu-img
+    state: present
+
+- name: Download iso
+  ansible.builtin.import_tasks: download_iso.ansible.yaml
+
+- name: Authorize and add iso
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Upload iso disk
+      ovirt.ovirt.ovirt_disk:
+        name: "{{ default_iso_name }}"
+        upload_image_path: "/root/{{ iso_filename }}"
+        storage_domain: "{{ storage_domain_name }}"
+        wait: true
+        format: raw
+        content_type: iso
+        auth: "{{ ovirt_auth }}"
+      register: upload_result
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

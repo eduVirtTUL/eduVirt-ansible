@@ -1,0 +1,18 @@
+ovirt_machines:
+  children:
+    ovirt_engine:
+    ovirt_nodes:
+
+ovirt_engine:
+  hosts:
+    engine:
+      ansible_host: vteste2.vlab.it.p.lodz.pl
+
+ovirt_nodes:
+  hosts:
+    node1:
+      ansible_host: vtesth21.vlab.it.p.lodz.pl
+    node2:
+      ansible_host: vtesth22.vlab.it.p.lodz.pl
+    node3:
+      ansible_host: vtesth23.vlab.it.p.lodz.pl

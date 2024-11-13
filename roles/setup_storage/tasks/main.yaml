@@ -13,7 +13,7 @@
         state: present
         host: "{{ groups['ovirt_nodes'][0] }}"
         data_center: Default
-        name: storage_domain
+        name: "{{ storage_domain_name }}"
         nfs:
           address: "{{ storage_address }}"
           path: "{{ storage_path }}"
