@@ -4,11 +4,52 @@
     src: files/ks.cfg
     dest: "/root/{{ vm_template_created_kickstart_filename }}"
     mode: '0444'
+  register: _vm_template_created_kickstart_file_copy_results
 
-- name: Create kickstart disk
-  ansible.builtin.include_tasks:
-    file: create_kickstart_disk.ansible.yaml
+- name: Create kickstart disk and template vm
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
 
-- name: Create vm template
-  ansible.builtin.include_tasks:
-    file: create_template.ansible.yaml
+    - name: Check if kickstart disk exists
+      ovirt.ovirt.ovirt_disk_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{ vm_template_created_kickstart_ovirt_disk_name }} and datacenter=Default"
+      register: _vm_template_created_does_kickstart_disk_exits
+
+    - name: Warn
+      warning:
+        msg: |
+          There are more than one disks named: {{ vm_template_created_kickstart_ovirt_disk_name }} - which is the name of a kickstart disk.
+          This may lead to selecting a wrong disk for template os installation.
+          Consider changing the name of the kickstart disk or deleting excess disks.
+      when: _vm_template_created_does_kickstart_disk_exits.ovirt_disks | length > 1
+
+    - name: Create kickstart disk
+      ansible.builtin.include_tasks:
+        file: create_kickstart_disk.ansible.yaml
+      when: _vm_template_created_kickstart_file_copy_results.changed or (_vm_template_created_does_kickstart_disk_exits.ovirt_disks | length == 0)
+      register: _vm_template_created_created_kickstart_disk
+
+    - name: Check if template exists
+      ovirt.ovirt.ovirt_template_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{ vm_template_created_template_name }} and datacenter=Default"
+      register: _vm_template_created_does_template_exists
+      when: _vm_template_created_created_kickstart_disk.skipped | default(false)
+
+    - name: Create vm template
+      ansible.builtin.include_tasks:
+        file: create_template.ansible.yaml
+      when: not _vm_template_created_created_kickstart_disk.skipped or (_vm_template_created_does_template_exists.ovirt_templates | length == 0)
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

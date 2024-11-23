@@ -1,14 +1,6 @@
 ---
 - name: Create template
   block:
-    - name: Authorize to engine
-      ovirt.ovirt.ovirt_auth:
-        url: https://{{ ansible_host }}/ovirt-engine/api
-        insecure: true
-        username: "{{ ovirt_admin_username }}"
-        password: "{{ ovirt_admin_password }}"
-        state: present
-
     - name: Create disk for template vm
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
@@ -29,10 +21,11 @@
         disks:
           - name: "{{ template_disk.disk.name }}"
             bootable: true
-          - name: "{{ kickstart_disk.disk.name }}"
+          - name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
         storage_domain: "{{ storage_domain_name }}"
         operating_system: "{{ vm_template_created_operating_system_vm_label }}"
         state: present
+      register: _vm_template_created_template_vm
 
     - name: Create nic for the vm_template_created
       ovirt.ovirt.ovirt_nic:
@@ -60,7 +53,7 @@
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
         state: detached
-        name: "{{ template_disk.disk.name }}"
+        name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
 
     - name: Success
       ansible.builtin.debug:
@@ -73,7 +66,17 @@
         vm: "{{ vm_template_created_template_name }}"
 
   always:
-    - name: Always revoke the SSO token
-      ovirt.ovirt.ovirt_auth:
+    - name: Detach kickstart disk from template vm
+      ovirt.ovirt.ovirt_disk:
+        auth: "{{ ovirt_auth }}"
+        state: detached
+        name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
+
+    # ignore errors in case the machine was not even created
+    - name: Remove vm
+      ovirt.ovirt.ovirt_vm:
+        auth: "{{ ovirt_auth }}"
         state: absent
-        ovirt_auth: "{{ ovirt_auth }}"
+        id: "{{ _vm_template_created_template_vm.id }}"
+      ignore_errors: true
+    # noqa ignore-errors

@@ -3,3 +3,4 @@ password_key.txt
 .venv
 .vscode
 stash
+__pycache__

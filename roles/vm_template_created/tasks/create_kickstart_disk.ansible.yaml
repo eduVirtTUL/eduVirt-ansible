@@ -45,29 +45,12 @@
     cmd: "losetup -d /dev/{{ vm_template_created_loop_devive }}"
     removes: "/dev/{{ vm_template_created_loop_devive }}"
 
-- name: Upload kickstart disk
-  block:
-    - name: Authorize to engine
-      ovirt.ovirt.ovirt_auth:
-        url: https://{{ ansible_host }}/ovirt-engine/api
-        insecure: true
-        username: "{{ ovirt_admin_username }}"
-        password: "{{ ovirt_admin_password }}"
-        state: present
-
-    - name: Upload image
-      ovirt.ovirt.ovirt_disk:
-        auth: "{{ ovirt_auth }}"
-        name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
-        format: raw
-        image_path: "/root/{{ vm_template_created_kickstart_disk_name }}"
-        storage_domain: "{{ storage_domain_name }}"
-        read_only: true
-        force: true
-      register: kickstart_disk
-
-  always:
-    - name: Always revoke the SSO token
-      ovirt.ovirt.ovirt_auth:
-        state: absent
-        ovirt_auth: "{{ ovirt_auth }}"
+- name: Upload image
+  ovirt.ovirt.ovirt_disk:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
+    format: raw
+    image_path: "/root/{{ vm_template_created_kickstart_disk_name }}"
+    storage_domain: "{{ storage_domain_name }}"
+    read_only: true
+    force: true

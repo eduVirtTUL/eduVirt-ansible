@@ -1,8 +1,12 @@
-ansible-galaxy collection install ansible.posix - dla czasu wykonania i obsługi firewalld
+# EduVirt environment
+
+## Required packages
+
+ansible-galaxy collection install ansible.posix
 ansible-galaxy collection install ovirt.ovirt
-ansible-galaxy collection install community.general - jquery
-pip install jmespath - jquery
+ansible-galaxy collection install community.general
 ansible-galaxy install ovirt.ovirt-ansible-roles
+pip install jmespath - jquery
 
 ## Create kickstart disk
 
