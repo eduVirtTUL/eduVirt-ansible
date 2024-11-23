@@ -1,0 +1,47 @@
+keycloak_configured_keycloak_url: "{{ engine_url ~ '/ovirt-engine-auth' }}"
+keycloak_configured_keycloak_realm: "master"
+keycloak_configured_keycloak_admin_user: "admin"
+keycloak_configured_client_id: admin-cli
+keycloak_configured_client_secret: ""
+keycloak_configured_users_realm: "ovirt-internal"
+
+keycloak_configured_users:
+  - username: student1
+    firstName: Tomasz
+    lastName: Działowy
+    email: student1@test.com
+    enabled: true
+    password: test
+    temporary: false
+
+  - username: student2
+    firstName: Filip
+    lastName: Przysiadowski
+    email: student2@test.com
+    enabled: true
+    password: test
+    temporary: false
+
+  - username: student3
+    firstName: Bomasz
+    lastName: Tojdys
+    email: student3@test.com
+    enabled: true
+    password: test
+    temporary: false
+
+  - username: teacher1
+    firstName: Artur
+    lastName: Andrus
+    email: student4@test.com
+    enabled: true
+    password: test
+    temporary: false
+
+  - username: teacher2
+    firstName: Kurt
+    lastName: Cobain
+    email: student5@test.com
+    enabled: true
+    password: test
+    temporary: false

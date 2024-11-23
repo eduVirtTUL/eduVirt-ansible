@@ -16,6 +16,8 @@ vm_networks:
     vlan_tag: 4043
 
 default_iso_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso
+#default_iso_location: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/41.20241027.3.0/x86_64/fedora-coreos-41.20241027.3.0-live.x86_64.iso
 # checksum is checked using sha256sum - make sure the file located under the url can be used in the program
 default_iso_checksum_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM
+#default_iso_checksum: SHA256 (fedora-coreos-41.20241027.3.0-live.x86_64.iso) = fcb99dd0ab593ee5f56c9ab62d8a03b40f527e5291ac195721d3b69a6fb86e02
 default_iso_name: Fedora_Server_41

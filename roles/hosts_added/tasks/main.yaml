@@ -1,7 +1,6 @@
 ---
 - name: Authorize and add hosts
   block:
-    # retries are needed beacuse of an issue with detecting the sdk by ansible immediatly after engine installation
     - name: Authorize to engine
       ovirt.ovirt.ovirt_auth:
         url: https://{{ ansible_host }}/ovirt-engine/api

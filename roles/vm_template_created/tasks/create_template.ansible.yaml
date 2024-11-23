@@ -1,0 +1,79 @@
+---
+- name: Create template
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Create disk for template vm
+      ovirt.ovirt.ovirt_disk:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}_os_disk"
+        size: "{{ vm_template_created_template_disk_size }}"
+        storage_domain: "{{ storage_domain_name }}"
+      register: template_disk
+
+    - name: Create vm
+      ovirt.ovirt.ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}"
+        cd_iso: "{{ vm_template_created_iso_disk_name }}"
+        cluster: Default
+        cpu_cores: "{{ vm_template_created_template_cpu_cores }}"
+        memory: "{{ vm_template_created_template_memory }}"
+        disk_format: cow
+        disks:
+          - name: "{{ template_disk.disk.name }}"
+            bootable: true
+          - name: "{{ kickstart_disk.disk.name }}"
+        storage_domain: "{{ storage_domain_name }}"
+        operating_system: "{{ vm_template_created_operating_system_vm_label }}"
+        state: present
+
+    - name: Create nic for the vm_template_created
+      ovirt.ovirt.ovirt_nic:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}_nic_1"
+        network: "{{ vm_template_created_template_nic_network }}"
+        vm: "{{ vm_template_created_template_name }}"
+
+    - name: Start os installation
+      ovirt.ovirt.ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}"
+        state: running
+
+    - name: Wait for the vm to finish installation
+      ovirt.ovirt.ovirt_vm_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{ vm_template_created_template_name }} and cluster=Default"
+      register: _template_vm_query
+      retries: 60 # 60 tries every 30 sec ~ about 30 min
+      delay: 30
+      until: _template_vm_query.ovirt_vms[0].status == "down"
+
+    - name: Detach kickstart disk from template vm
+      ovirt.ovirt.ovirt_disk:
+        auth: "{{ ovirt_auth }}"
+        state: detached
+        name: "{{ template_disk.disk.name }}"
+
+    - name: Success
+      ansible.builtin.debug:
+        msg: "Success"
+
+    - name: Change vm to template
+      ovirt.ovirt.ovirt_template:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}"
+        vm: "{{ vm_template_created_template_name }}"
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

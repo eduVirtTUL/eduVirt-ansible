@@ -16,13 +16,13 @@
         auth: "{{ ovirt_auth }}"
         pattern: "datacenter = Default"
         follow: nics
-      register: result
+      register: nics
 
     - name: Match nics to mgmt macs
       delegate_to: "{{ item }}"
       delegate_facts: true
       ansible.builtin.set_fact:
-        mgmt_interface: "{{ result | community.general.json_query(query) }}"
+        mgmt_interface: "{{ nics | community.general.json_query(query) }}"
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['mgmt_mac'] }}'].name | [0]"
       with_items:
@@ -32,7 +32,7 @@
       delegate_to: "{{ item }}"
       delegate_facts: true
       ansible.builtin.set_fact:
-        storage_interface: "{{ result | community.general.json_query(query) }}"
+        storage_interface: "{{ nics | community.general.json_query(query) }}"
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['storage_mac'] }}'].name | [0]"
       with_items:
@@ -42,7 +42,7 @@
       delegate_to: "{{ item }}"
       delegate_facts: true
       ansible.builtin.set_fact:
-        vm_network_interface: "{{ result | community.general.json_query(query) }}"
+        vm_network_interface: "{{ nics | community.general.json_query(query) }}"
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['trunk_mac'] }}'].name | [0]"
       with_items:

@@ -18,8 +18,13 @@
 
 - name: Add hosts, setup networking and storage, upload default iso
   hosts: engine
+  vars:
+    engine_url: https://vteste2.vlab.it.p.lodz.pl
+    keycloak_admin_password: "{{ hostvars['engine']['ovirt_admin_password'] }}"
   roles:
     - hosts_added
     - networking_setup
     - setup_storage
     - upload_default_iso
+    - keycloak_configured
+    - vm_template_created

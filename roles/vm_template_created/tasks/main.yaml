@@ -1,0 +1,14 @@
+---
+- name: Copy kickstart file
+  ansible.builtin.copy:
+    src: files/ks.cfg
+    dest: "/root/{{ vm_template_created_kickstart_filename }}"
+    mode: '0444'
+
+- name: Create kickstart disk
+  ansible.builtin.include_tasks:
+    file: create_kickstart_disk.ansible.yaml
+
+- name: Create vm template
+  ansible.builtin.include_tasks:
+    file: create_template.ansible.yaml

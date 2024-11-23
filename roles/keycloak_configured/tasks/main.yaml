@@ -1,0 +1,22 @@
+---
+- name: Add Keycloak Users
+  community.general.keycloak_user:
+    auth_client_id: "{{ keycloak_configured_client_id }}"
+    auth_client_secret: "{{ keycloak_configured_client_secret }}"
+    auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
+    auth_realm: "{{ keycloak_configured_keycloak_realm }}"
+    auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
+    auth_password: "{{ keycloak_admin_password }}"
+    state: present
+    realm: "{{ keycloak_configured_users_realm }}"
+    username: "{{ item.username }}"
+    firstName: "{{ item.firstName }}"
+    lastName: "{{ item.lastName }}"
+    email: "{{ item.email }}"
+    enabled: "{{ item.enabled }}"
+    credentials:
+      - type: "password"
+        value: "{{ item.password }}"
+        temporary: "{{ item.temporary }}"
+    validate_certs: false
+  loop: "{{ keycloak_configured_users }}"

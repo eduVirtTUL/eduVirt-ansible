@@ -1,0 +1,73 @@
+---
+- name: Create virutal disk
+  ansible.builtin.command:
+    cmd: "qemu-img create -f raw {{ vm_template_created_kickstart_disk_name }} {{ vm_template_created_kickstart_disk_size }}"
+    removes: "/root/{{ vm_template_created_kickstart_filename }}"
+
+- name: Attach the disk to loop device
+  ansible.builtin.command:
+    cmd: "losetup /dev/{{ vm_template_created_loop_devive }} /root/{{ vm_template_created_kickstart_disk_name }}"
+    removes: "/root/{{ vm_template_created_kickstart_disk_name }}"
+
+- name: Create partition on the disk
+  community.general.parted:
+    device: "/dev/{{ vm_template_created_loop_devive }}"
+    number: 1
+    state: present
+
+- name: Create filesystem on the disk
+  community.general.filesystem:
+    dev: "/dev/{{ vm_template_created_loop_devive }}"
+    fstype: ext4
+    opts: -L OEMDRV
+
+- name: Mount disk to filesystem
+  ansible.posix.mount:
+    state: mounted
+    path: "/mnt/{{ vm_template_created_kickstart_disk_name }}"
+    fstype: ext4
+    src: "/dev/{{ vm_template_created_loop_devive }}"
+
+- name: Copy kickstart file onto disk
+  ansible.builtin.copy:
+    src: "/root/{{ vm_template_created_kickstart_filename }}"
+    remote_src: true
+    dest: "/mnt/{{ vm_template_created_kickstart_disk_name }}/ks.cfg"
+    mode: '0444'
+
+- name: Unmount disk
+  ansible.posix.mount:
+    state: unmounted
+    path: "/mnt/{{ vm_template_created_kickstart_disk_name }}"
+
+- name: Detach loop device
+  ansible.builtin.command:
+    cmd: "losetup -d /dev/{{ vm_template_created_loop_devive }}"
+    removes: "/dev/{{ vm_template_created_loop_devive }}"
+
+- name: Upload kickstart disk
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Upload image
+      ovirt.ovirt.ovirt_disk:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
+        format: raw
+        image_path: "/root/{{ vm_template_created_kickstart_disk_name }}"
+        storage_domain: "{{ storage_domain_name }}"
+        read_only: true
+        force: true
+      register: kickstart_disk
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

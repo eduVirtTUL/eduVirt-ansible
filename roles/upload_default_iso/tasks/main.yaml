@@ -28,6 +28,10 @@
         auth: "{{ ovirt_auth }}"
       register: upload_result
 
+    - name: Remember the iso disk name
+      ansible.builtin.set_fact:
+        iso_disk_name: upload_result.disk.name
+
   always:
     - name: Always revoke the SSO token
       ovirt.ovirt.ovirt_auth:
