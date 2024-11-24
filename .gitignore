@@ -4,3 +4,6 @@ password_key.txt
 .vscode
 stash
 __pycache__
+context
+*.log
+*-artifact*

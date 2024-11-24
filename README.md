@@ -1,12 +1,48 @@
 # EduVirt environment
 
-## Required packages
+## Running the playbooks
 
+### Execution environment
+
+Execution environment provides a portable environment for running the playbooks. It uses a container to store all neccessary python dependiencies and ansible collections.    
+
+### Building the execution environment 
+
+To build a local execution environment run the following command.
+
+```
+ansible-builder build --tag eduvirt_ee --container-runtime docker -f execution_environment/execution-environment.yaml
+```
+
+### Using the execution environment 
+
+Execution environment can be used to lauch playbooks using ansible-navigator. For example: 
+
+```
+ansible-navigator run setup_ovirt_playbook.yaml -i inventories/set2/hosts.yaml  --execution-environment-image eduvirt_ee --pull-policy missing --mode stdout
+```
+
+Specified pull policy is important, as it prioritizes the locally built image. Selected mode makes the output format the same as running a `ansible-playbook`.
+
+### Alternative 
+
+If you don't want to use docker to run playbooks, or would like to develop the playbooks using something like Ansible VSCode extension, you can setup a local environment.
+
+
+In this case you need to create a python virtual environment using the `requirements.txt` file in the root of the project. After that you should install the packages below.
+
+```
 ansible-galaxy collection install ansible.posix
 ansible-galaxy collection install ovirt.ovirt
 ansible-galaxy collection install community.general
 ansible-galaxy install ovirt.ovirt-ansible-roles
-pip install jmespath - jquery
+```
+
+This allows to run the playbook this way:
+
+```
+ansible-playbook -i inventories/set2/hosts.yaml setup_ovirt_playbook.yaml
+```
 
 ## Create kickstart disk
 
