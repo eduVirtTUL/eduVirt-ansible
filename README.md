@@ -8,7 +8,18 @@ Execution environment provides a portable environment for running the playbooks.
 
 ### Building the execution environment 
 
-To build a local execution environment run the following command.
+Create a python virtual environment and activate it.
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install `ansible-builder` used for building the image and `ansible-runner` to run playbooks on the container:
+```
+python3 -m pip install ansible-builder ansible-runner
+```
+
+To build a local execution environment run the following command:
 
 ```
 ansible-builder build --tag eduvirt_ee --container-runtime docker -f execution_environment/execution-environment.yaml
@@ -29,12 +40,10 @@ Specified pull policy is important, as it prioritizes the locally built image. S
 If you don't want to use docker to run playbooks, or would like to develop the playbooks using something like Ansible VSCode extension, you can setup a local environment.
 
 
-In this case you need to create a python virtual environment using the `requirements.txt` file in the root of the project. After that you should install the packages below.
+In this case you need to create a python virtual environment and install packaged using the `requirements.txt` file in the root of the project. After that you should install the packages below.
 
 ```
-ansible-galaxy collection install ansible.posix
-ansible-galaxy collection install ovirt.ovirt
-ansible-galaxy collection install community.general
+ansible-galaxy collection install ansible.posix ovirt.ovirt community.general 
 ansible-galaxy install ovirt.ovirt-ansible-roles
 ```
 
