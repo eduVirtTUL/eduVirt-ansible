@@ -14,9 +14,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install `ansible-builder` used for building the image and `ansible-runner` to run playbooks on the container:
+Install `ansible-builder` used for building the image and `ansible-navigator` to run playbooks on the container:
 ```
-python3 -m pip install ansible-builder ansible-runner
+python3 -m pip install ansible-builder ansible-navigator
 ```
 
 To build a local execution environment run the following command:
@@ -40,7 +40,17 @@ Specified pull policy is important, as it prioritizes the locally built image. S
 If you don't want to use docker to run playbooks, or would like to develop the playbooks using something like Ansible VSCode extension, you can setup a local environment.
 
 
-In this case you need to create a python virtual environment and install packaged using the `requirements.txt` file in the root of the project. After that you should install the packages below.
+**You need at least python 3.11 for this to work.**
+
+In this case you need to create a python virtual environment and install packaged using the `requirements.txt` file in the root of the project. 
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+
+After that you should install the packages below.
 
 ```
 ansible-galaxy collection install ansible.posix ovirt.ovirt community.general 
