@@ -1,0 +1,14 @@
+---
+ansible-navigator:
+  execution-environment:
+    container-engine: docker
+    image: ghcr.io/eduvirttul/eduvirt_ee:latest
+    pull:
+      policy: missing
+  logging:
+    append: true
+    file: .ansible-navigator/ansible-navigator.log
+    level: warning
+  playbook-artifact:
+    enable: true
+    save-as: .ansible-navigator/{playbook_name}-last-run.json

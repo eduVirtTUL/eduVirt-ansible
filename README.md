@@ -6,34 +6,15 @@
 
 Execution environment provides a portable environment for running the playbooks. It uses a container to store all neccessary python dependiencies and ansible collections.    
 
-### Building the execution environment 
-
-Create a python virtual environment and activate it.
-```
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-Install `ansible-builder` used for building the image and `ansible-navigator` to run playbooks on the container:
-```
-python3 -m pip install ansible-builder ansible-navigator
-```
-
-To build a local execution environment run the following command:
-
-```
-ansible-builder build --tag eduvirt_ee --container-runtime docker -f execution_environment/execution-environment.yaml
-```
-
 ### Using the execution environment 
 
 Execution environment can be used to lauch playbooks using ansible-navigator. For example: 
 
 ```
-ansible-navigator run setup_ovirt_playbook.yaml -i inventories/set2/hosts.yaml  --execution-environment-image eduvirt_ee --pull-policy missing --mode stdout
+ansible-navigator run test_ee.yaml -i inventories/set2/hosts.yaml --mode stdout
 ```
 
-Specified pull policy is important, as it prioritizes the locally built image. Selected mode makes the output format the same as running a `ansible-playbook`.
+ Selected mode makes the output format the same as running a `ansible-playbook` instead of an interactive one.
 
 ### Alternative 
 
@@ -60,7 +41,7 @@ ansible-galaxy install ovirt.ovirt-ansible-roles
 This allows to run the playbook this way:
 
 ```
-ansible-playbook -i inventories/set2/hosts.yaml setup_ovirt_playbook.yaml
+ansible-playbook -i inventories/set2/hosts.yaml test_ee.yaml
 ```
 
 ## Create kickstart disk

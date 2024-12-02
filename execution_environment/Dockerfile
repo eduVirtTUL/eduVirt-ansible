@@ -4,7 +4,7 @@ ARG PY='python3.12'
 ARG ANSIBLE_RUNNER_VERSION='2.4.0'
 ARG ANSIBLE_CORE_VERSION='2.18.0'
 
-FROM alpine:3.20.3 as base
+FROM alpine:3.20.3 AS base
 ARG PYTHON_VERSION
 ARG PIP_VERSION
 ARG PY
@@ -19,7 +19,7 @@ RUN apk update && apk add --no-cache --no-interactive \
 
 CMD ["sh"]
 
-FROM base as system
+FROM base AS system
 
 USER root
 
@@ -27,14 +27,14 @@ WORKDIR /build
 COPY system-requirements.txt .
 RUN apk update && apk add --no-cache --no-interactive $(cat system-requirements.txt)
 
-FROM system as ansible
+FROM system AS ansible
 ARG ANSIBLE_CORE_VERSION
 ARG ANSIBLE_RUNNER_VERSION
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 USER root
 
-RUN $PY -m pip install --no-cache-dir ansible-core==$ANSIBLE_CORE_VERSION ansible-runner==$ANSIBLE_RUNNER_VERSION
+RUN $PY -m pip install --no-cache-dir ansible-core==$ANSIBLE_CORE_VERSION ansible-runner==$ANSIBLE_RUNNER_VERSION pyyaml
 
 # Directory for executing Playbooks
 WORKDIR /runner/
@@ -53,7 +53,7 @@ RUN addgroup ${GROUP} --gid ${GID} && \
 RUN chmod 777 /runner/ /home/ansible/
 
 
-FROM ansible as python
+FROM ansible AS python
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 USER root
@@ -64,7 +64,7 @@ COPY python-requirements.txt .
 RUN $PY -m pip install --no-cache-dir -r python-requirements.txt
 
 
-FROM python as galaxy
+FROM python AS galaxy
 
 USER root
 WORKDIR /build
@@ -77,4 +77,5 @@ ENV HOME=/home/ansible
  
 # Switch to non-root user
 USER ${UID}:${GID}
+WORKDIR /home/ansible
 CMD ["bash"]
