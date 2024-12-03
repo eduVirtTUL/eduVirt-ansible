@@ -1,9 +1,15 @@
-keycloak_configured_keycloak_url: "{{ engine_url ~ '/ovirt-engine-auth' }}"
+keycloak_configured_eduvirt_client_id: eduVirtDev
+keycloak_configured_validate_certs: false
+keycloak_configured_keycloak_url: "https://{{ hostvars['engine']['ansible_host'] }}/ovirt-engine-auth"
 keycloak_configured_keycloak_realm: "master"
 keycloak_configured_keycloak_admin_user: "admin"
+keycloak_configured_keycloak_keycloak_admin_password: "{{ hostvars['engine']['ovirt_admin_password'] }}"
 keycloak_configured_client_id: admin-cli
 keycloak_configured_client_secret: ""
-keycloak_configured_users_realm: "ovirt-internal"
+keycloak_configured_realm: "ovirt-internal"
+
+keycloak_configured_redirect_uris:
+  - http://localhost:8080/auth/callback
 
 keycloak_configured_users:
   - username: student1

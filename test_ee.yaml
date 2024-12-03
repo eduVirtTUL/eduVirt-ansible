@@ -2,7 +2,5 @@
 - name: Test ee
   hosts: engine
   gather_facts: false
-  tasks:
-    - name: Test ee message
-      ansible.builtin.debug:
-        msg: Debug
+  roles:
+    - keycloak_configured

@@ -1,4 +1,39 @@
 ---
+- name: Create eduVirt client
+  community.general.keycloak_client:
+    auth_client_id: "{{ keycloak_configured_client_id }}"
+    auth_client_secret: "{{ keycloak_configured_client_secret }}"
+    auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
+    auth_realm: "{{ keycloak_configured_keycloak_realm }}"
+    auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
+    auth_password: "{{ keycloak_configured_keycloak_keycloak_admin_password }}"
+    state: present
+    redirect_uris: "{{ keycloak_configured_redirect_uris }}"
+    realm: "{{ keycloak_configured_realm }}"
+    validate_certs: "{{ keycloak_configured_validate_certs }}"
+    client_id: "{{ keycloak_configured_eduvirt_client_id }}"
+    public_client: false
+
+- name: Retrieve client secret
+  community.general.keycloak_clientsecret_info:
+    auth_client_id: "{{ keycloak_configured_client_id }}"
+    auth_client_secret: "{{ keycloak_configured_client_secret }}"
+    auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
+    auth_realm: "{{ keycloak_configured_keycloak_realm }}"
+    auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
+    auth_password: "{{ keycloak_configured_keycloak_keycloak_admin_password }}"
+    realm: "{{ keycloak_configured_realm }}"
+    validate_certs: "{{ keycloak_configured_validate_certs }}"
+    client_id: "{{ keycloak_configured_eduvirt_client_id }}"
+  register: _keycloak_configured_eduvirt_client_secret
+
+- name: Save secret locally
+  ansible.builtin.copy:
+    content: "{{ _keycloak_configured_eduvirt_client_secret.clientsecret_info.value }}"
+    dest: eduvirt-client-secret.txt
+    mode: '0440'
+  delegate_to: localhost
+
 - name: Add Keycloak Users
   community.general.keycloak_user:
     auth_client_id: "{{ keycloak_configured_client_id }}"
@@ -6,9 +41,9 @@
     auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
     auth_realm: "{{ keycloak_configured_keycloak_realm }}"
     auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
-    auth_password: "{{ keycloak_admin_password }}"
+    auth_password: "{{ keycloak_configured_keycloak_keycloak_admin_password }}"
     state: present
-    realm: "{{ keycloak_configured_users_realm }}"
+    realm: "{{ keycloak_configured_realm }}"
     username: "{{ item.username }}"
     firstName: "{{ item.firstName }}"
     lastName: "{{ item.lastName }}"
@@ -18,5 +53,5 @@
       - type: "password"
         value: "{{ item.password }}"
         temporary: "{{ item.temporary }}"
-    validate_certs: false
+    validate_certs: "{{ keycloak_configured_validate_certs }}"
   loop: "{{ keycloak_configured_users }}"
