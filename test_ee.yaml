@@ -2,5 +2,13 @@
 - name: Test ee
   hosts: engine
   gather_facts: false
+  vars:
+    upload_default_iso_checksum_location: "{{ default_iso_checksum_location }}"
+    upload_default_iso_name: "{{ default_iso_name }}"
+    # upload_default_iso_checksum: "{{ default_iso_checksum }}"
+    upload_default_iso_location: "{{ default_iso_location }}"
+    vm_template_created_iso_disk_name: "{{ default_iso_name }}"
   roles:
-    - keycloak_configured
+    # - upload_default_iso
+    # - keycloak_configured
+    - vm_template_created

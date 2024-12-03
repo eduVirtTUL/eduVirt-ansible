@@ -46,7 +46,9 @@
     - name: Create vm template
       ansible.builtin.include_tasks:
         file: create_template.ansible.yaml
-      when: not _vm_template_created_created_kickstart_disk.skipped or (_vm_template_created_does_template_exists.ovirt_templates | length == 0)
+      when: >
+        not (_vm_template_created_created_kickstart_disk.skipped | default(false))
+        or (_vm_template_created_does_template_exists.ovirt_templates | length == 0)
 
   always:
     - name: Always revoke the SSO token

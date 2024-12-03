@@ -18,6 +18,12 @@
 
 - name: Add hosts, setup networking and storage, upload default iso
   hosts: engine
+  vars:
+    upload_default_iso_checksum_location: "{{ default_iso_checksum_location }}"
+    upload_default_iso_name: "{{ default_iso_name }}"
+    # upload_default_iso_checksum: "{{ default_iso_checksum }}"
+    upload_default_iso_location: "{{ default_iso_location }}"
+    vm_template_created_iso_disk_name: "{{ default_iso_name }}"
   roles:
     - hosts_added
     - networking_setup

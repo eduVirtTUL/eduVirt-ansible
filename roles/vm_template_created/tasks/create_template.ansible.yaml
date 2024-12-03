@@ -45,7 +45,7 @@
         auth: "{{ ovirt_auth }}"
         pattern: "name={{ vm_template_created_template_name }} and cluster=Default"
       register: _template_vm_query
-      retries: 60 # 60 tries every 30 sec ~ about 30 min
+      retries: "{{ vm_template_created_template_creation_timeout / 2 }}" # number of retries equals time/2, because retries are made every 0.5 min
       delay: 30
       until: _template_vm_query.ovirt_vms[0].status == "down"
 
@@ -53,6 +53,7 @@
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
         state: detached
+        vm_name: "{{ vm_template_created_template_name }}"
         name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
 
     - name: Success
@@ -70,7 +71,10 @@
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
         state: detached
+        vm_name: "{{ vm_template_created_template_name }}"
         name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
+      ignore_errors: true
+      # noqa ignore-errors
 
     # ignore errors in case the machine was not even created
     - name: Remove vm

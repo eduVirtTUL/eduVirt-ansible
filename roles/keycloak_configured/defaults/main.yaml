@@ -39,7 +39,7 @@ keycloak_configured_users:
   - username: teacher1
     firstName: Artur
     lastName: Andrus
-    email: student4@test.com
+    email: teacher1@test.com
     enabled: true
     password: test
     temporary: false
@@ -47,7 +47,7 @@ keycloak_configured_users:
   - username: teacher2
     firstName: Kurt
     lastName: Cobain
-    email: student5@test.com
+    email: teacher2@test.com
     enabled: true
     password: test
     temporary: false

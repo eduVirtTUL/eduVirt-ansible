@@ -1,4 +1,5 @@
-vm_template_created_iso_disk_name: "{{ iso_disk_name is defined | ternary(iso_disk_name, default_iso_name) }}"
+# vm_template_created_iso_disk_name:
+vm_template_created_template_creation_timeout: 30 # in minutes
 vm_template_created_kickstart_disk_size: 2M
 vm_template_created_kickstart_disk_name: kickstart_disk.raw
 vm_template_created_kickstart_ovirt_disk_name: kickstart_disk

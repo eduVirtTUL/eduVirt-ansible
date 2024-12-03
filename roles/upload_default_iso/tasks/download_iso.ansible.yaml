@@ -1,34 +1,36 @@
 - name: Download image checksum
   ansible.builtin.get_url:
-    url: "{{ default_iso_checksum_location }}"
-    dest: "/root/{{ default_iso_name }}-CHECKSUM"
+    url: "{{ upload_default_iso_checksum_location }}"
+    dest: "/root/{{ upload_default_iso_name }}-CHECKSUM"
     mode: '0400'
-  register: download_checksum
-  when: default_iso_checksum is undefined
+  register: _upload_default_iso_downloaded_checksum
+  when: upload_default_iso_checksum is undefined
 
 - name: Save checksum to file
   ansible.builtin.copy:
-    content: "{{ default_iso_checksum }}"
-    dest: "/root/{{ default_iso_name }}.iso-CHECKSUM"
+    content: "{{ upload_default_iso_checksum }}"
+    dest: "/root/{{ upload_default_iso_name }}.iso-CHECKSUM"
     mode: '0400'
-  register: bare_checksum
-  when: default_iso_checksum is defined
+  register: _upload_default_iso_bare_checksum
+  when: upload_default_iso_checksum is defined
 
 
 - name: Extract iso name from url
   ansible.builtin.set_fact:
-    iso_filename: "{{ default_iso_location | regex_replace('.*/', '') }}"
+    _upload_default_iso_filename: "{{ upload_default_iso_location | regex_replace('.*/', '') }}"
 
 # Suppress failure of the stage regardless of the return of checksum check
 - name: Check existing iso checksum
-  ansible.builtin.command: "sha256sum -c {{ (download_checksum.dest is defined) | ternary(download_checksum.dest, bare_checksum.dest) }}"
-  register: checksum_result
+  ansible.builtin.command: >
+    "sha256sum -c {{ (_upload_default_iso_downloaded_checksum.dest is defined) |
+     ternary(_upload_default_iso_downloaded_checksum.dest, _upload_default_iso_bare_checksum.dest) }}"
+  register: _upload_default_iso_checksum_result
   changed_when: false
   failed_when: false
 
 - name: Download default image
   ansible.builtin.get_url:
-    url: "{{ default_iso_location }}"
-    dest: "/root/{{ iso_filename }}"
+    url: "{{ upload_default_iso_location }}"
+    dest: "/root/{{ _upload_default_iso_filename }}"
     mode: '0400'
-  when: iso_filename in checksum_result.stderr
+  when: _upload_default_iso_filename in _upload_default_iso_checksum_result.stderr
