@@ -6,7 +6,18 @@
 
 Execution environment provides a portable environment for running the playbooks. It uses a container to store all neccessary python dependiencies and ansible collections.    
 
-### Using the execution environment 
+### Using the execution environment
+
+Create a python virtual environment and activate it.
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install `ansible-navigator` to run playbooks on the container:
+```
+python3 -m pip install ansible-navigator
+```
 
 Execution environment can be used to lauch playbooks using ansible-navigator. For example: 
 
