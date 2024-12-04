@@ -3,7 +3,10 @@ argument_specs:
     short_description: Role for installing ovirt package.
     description:
       - Role for installing ovirt package.
-      - Installs ovirt package and downgrades libnl3. See https://lists.ovirt.org/archives/list/users@ovirt.org/thread/XR7R3BFY6ZVNPC5MRT6PBRANGMBBQO2U/?sort=date
+      - >
+        Installs ovirt package and downgrades libnl3.
+        See https://lists.ovirt.org/archives/list/users@ovirt.org/thread/XR7R3BFY6ZVNPC5MRT6PBRANGMBBQO2U/?sort=date
+
     author: Jakub Kozielski
     options:
       ovirt_repository_installed_package:

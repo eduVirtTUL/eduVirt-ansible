@@ -8,8 +8,10 @@ argument_specs:
         Nodes are taken from [ovirt_nodes] inventory group. Each of the hosts has to have
         [mgmt_mac], [storage_mac], [trunk_mac] specified, which represent respective network interface mac addresses.
       - >
-        Additionaly a [storage_ip] and [vm_networks] is needed, [storage_ip] for each of the nodes, which represent ip address which should be assigned to the storage interface.
-        [vm_networks] for the execution host, a list of pairs of [name]: a string with the name of the name of the network and [vlan_tag]: number representing a vlan tag assigned to the network. 
+        Additionaly a [storage_ip] and [vm_networks] is needed, [storage_ip] for each of the nodes,
+        which represent ip address which should be assigned to the storage interface.
+        [vm_networks] for the execution host, a list of pairs of [name]: a string with the name of the name of the network
+        and [vlan_tag]: number representing a vlan tag assigned to the network.
 
       - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
     author: Jakub Kozielski

@@ -11,27 +11,33 @@ argument_specs:
       upload_default_iso_checksum_location:
         type: str
         description:
-          - "URI to the checksum. For example: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM"
+          - >
+            URI to the checksum. For example:
+            https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM
           - Either this or [upload_default_iso_checksum] must be specified.
 
       upload_default_iso_checksum:
         type: str
         description:
-          - "String containing checksum. For example: SHA256 (fedora-cohttps://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUMreos-41.20241027.3.0-live.x86_64.iso) = fcb99dd0ab593ee5f56c9ab62d8a03b40f527e5291ac195721d3b69a6fb86e02"
+          - >
+            String containing checksum. For example:
+            SHA256 (fedora-cohttps://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUMreos-41.20241027.3.0-live.x86_64.iso) = fcb99dd0ab593ee5f56c9ab62d8a03b40f527e5291ac195721d3b69a6fb86e02
           - Either this or [upload_default_iso_checksum_location] must be specified.
 
       upload_default_iso_location:
         type: str
         required: true
-        description: 
-          - "URI to the iso image. For example: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso"
+        description:
+          - >
+            URI to the iso image. For example:
+            https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso
           - Iso is downloaded only if not present on the host or the existing one does not match the provided checksum.
-      
+
       upload_default_iso_name:
         type: str
         required: true
         description: Name of the iso in the ovirt.
-      
+
       upload_default_iso_storage_domain_name:
         type: str
         default: "[storage_domain_name]"

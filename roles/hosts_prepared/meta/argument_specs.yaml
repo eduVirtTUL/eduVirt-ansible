@@ -9,6 +9,6 @@ argument_specs:
       hosts_prepared_engine:
         type: str
         default: "[hostvars['engine']['ansible_host']]"
-        description: 
+        description:
           - Address of the engine.
           - Defaults to [ansible_host] of the engine host.

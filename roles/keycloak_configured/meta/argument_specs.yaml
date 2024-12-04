@@ -5,11 +5,11 @@ argument_specs:
       - Role for configuring the keycloak instance for ovirt.
       - >
         Creates a internal keycloak client for and saves the secret to the filesystem where the role was invocated.
-        Creates a set of users for testing purposes. 
+        Creates a set of users for testing purposes.
       - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
     author: Jakub Kozielski
     options:
-      keycloak_configured_client_id: 
+      keycloak_configured_client_id:
         type: str
         default: admin-cli
         description: Client used to connect to the keycloak
@@ -23,12 +23,12 @@ argument_specs:
         type: str
         default: eduVirtDev
         description: Name of the created client.
-      
+
       keycloak_configured_keycloak_admin_user:
         type: str
         default: admin
         description: Username used to connect to the keycloak
-      
+
       keycloak_configured_keycloak_keycloak_admin_password:
         type: str
         default: "[ovirt_admin_password]"

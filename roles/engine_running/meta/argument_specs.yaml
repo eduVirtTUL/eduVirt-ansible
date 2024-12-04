@@ -10,7 +10,7 @@ argument_specs:
       engine_running_alternative_python_path:
         type: str
         default: /usr/bin/python3.11
-        description: 
+        description:
           - Alternative python installation path.
           - >
             If ansible is running a python version that does not satisfy [engine_running_min_python_version]
