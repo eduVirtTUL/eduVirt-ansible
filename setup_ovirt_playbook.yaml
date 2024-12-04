@@ -24,6 +24,7 @@
     # upload_default_iso_checksum: "{{ default_iso_checksum }}"
     upload_default_iso_location: "{{ default_iso_location }}"
     vm_template_created_iso_disk_name: "{{ default_iso_name }}"
+    vm_template_created_template_nic_network: "{{ vm_networks[0].name }}"
   roles:
     - hosts_added
     - networking_setup
