@@ -1,85 +1,40 @@
 argument_specs:
   main:
-    short_description: Role for creating a vm template.
+    short_description: Role for uploading an iso to the ovirt.
     description:
-      - Role for creating a vm template.
+      - Role for uploading an iso to the ovirt.
       - >
-        It creates a kickstart file and puts it into a virtual disk, that is then uploaded to ovirt.
-        A vm is created and the kickstart disk in used. The resulting vm is turned into a template.
-      - The virutal disk is created on the host specified in the role. An access to loop devices is required.
-      - Supports only RHEL based os.
+        Downloads a specified iso image and uploads it to the ovirt as a disk.
+      - A RHEL based os is suggested.
     author: Jakub Kozielski
     options:
-      vm_template_created_cluster:
+      upload_default_iso_checksum_location:
         type: str
-        default: Default
-        description: Name of the cluster where the template should be created.
+        description:
+          - "URI to the checksum. For example: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM"
+          - Either this or [upload_default_iso_checksum] must be specified.
 
-      vm_template_created_iso_disk_name:
+      upload_default_iso_checksum:
+        type: str
+        description:
+          - "String containing checksum. For example: SHA256 (fedora-cohttps://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUMreos-41.20241027.3.0-live.x86_64.iso) = fcb99dd0ab593ee5f56c9ab62d8a03b40f527e5291ac195721d3b69a6fb86e02"
+          - Either this or [upload_default_iso_checksum_location] must be specified.
+
+      upload_default_iso_location:
         type: str
         required: true
-        description: Name of the iso disk used for system installation.
-
-      vm_template_created_kickstart_disk_name:
-        type: str
-        default: kickstart_disk.raw
-        description: Name of the virtual disk created on the host.
-
-      vm_template_created_kickstart_disk_size:
-        type: str
-        default: 2M
-        description: Size of the disk in a [number][unit] format passed to qemu-img.
-
-      vm_template_created_kickstart_filename:
-        type: str
-        default: ks.cfg
-        description:
-          - Name of the kickstart file.
-          - Keeping this file on the host after role execution can prevent unnecessary disk recreations.
-
-      vm_template_created_kickstart_ovirt_disk_name:
-        type: str
-        default: kickstart_disk
-        description: Name of the kickstart disk in the ovirt.
-
-      vm_template_created_loop_devive:
-        type: str
-        default: loop0
-        description: Name of the loop device used in the virtual disk creation.
-
-      vm_template_created_operating_system_vm_label:
-        type: str
-        default: Red Hat Enterprise Linux 9.x x64
-        description: Ovirt os label for the vm template
-
-      vm_template_created_template_cpu_cores:
-        type: int
-        default: 4
-        description:
-          - Number of vcpu given to the vm template.
-          - Note that is the same as the number of vcpu given to the vm during os installation.
-
-      vm_template_created_template_creation_timeout:
-        type: int
-        default: 30
-        description: Number of minutes the vm template creation step can take at most.
-
-      vm_template_created_template_disk_size:
-        type: str
-        default: 8GiB
-        description: Size of the main disk in the template in a [number][unit] format.
-
-      vm_template_created_template_memory:
-        type: str
-        default: 4GiB
-        description: Amount of the memory given to the vm template [number][unit] format.
-
-      vm_template_created_template_name:
-        type: str
-        default: "[vm_template_created_iso_disk_name]_template"
-        description: Name of the created template
-
-      vm_template_created_template_nic_network:
+        description: 
+          - "URI to the iso image. For example: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso"
+          - Iso is downloaded only if not present on the host or the existing one does not match the provided checksum.
+      
+      upload_default_iso_name:
         type: str
         required: true
-        description: Name of the virtual network attached to the vm template.
+        description: Name of the iso in the ovirt.
+      
+      upload_default_iso_storage_domain_name:
+        type: str
+        default: "[storage_domain_name]"
+        description:
+          - Name of the storage domain where the iso will be placed.
+          - Defaults to hosts [storage_domain_name] variable.
