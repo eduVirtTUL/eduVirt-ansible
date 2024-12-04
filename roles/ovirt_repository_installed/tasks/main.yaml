@@ -1,6 +1,6 @@
 - name: Add ovirt source repositories
   ansible.builtin.dnf:
-    name: "{{ ovirt_engine_package_version }}"
+    name: "{{ ovirt_repository_installed_package }}"
     state: present
 
 # Downgrade the libnl3 library because of the issues with the synchronization of the networks. See:

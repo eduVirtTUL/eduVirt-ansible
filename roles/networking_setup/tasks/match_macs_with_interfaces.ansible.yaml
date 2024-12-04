@@ -14,15 +14,15 @@
     - name: Retrieve info about nodes
       ovirt.ovirt.ovirt_host_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "datacenter = Default"
+        pattern: "datacenter = {{ networking_setup_cluster }}"
         follow: nics
-      register: nics
+      register: _networking_setup_nics
 
     - name: Match nics to mgmt macs
       delegate_to: "{{ item }}"
       delegate_facts: true
       ansible.builtin.set_fact:
-        mgmt_interface: "{{ nics | community.general.json_query(query) }}"
+        mgmt_interface: "{{ _networking_setup_nics | community.general.json_query(query) }}"
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['mgmt_mac'] }}'].name | [0]"
       with_items:
@@ -32,7 +32,7 @@
       delegate_to: "{{ item }}"
       delegate_facts: true
       ansible.builtin.set_fact:
-        storage_interface: "{{ nics | community.general.json_query(query) }}"
+        storage_interface: "{{ _networking_setup_nics | community.general.json_query(query) }}"
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['storage_mac'] }}'].name | [0]"
       with_items:
@@ -42,7 +42,7 @@
       delegate_to: "{{ item }}"
       delegate_facts: true
       ansible.builtin.set_fact:
-        vm_network_interface: "{{ nics | community.general.json_query(query) }}"
+        vm_network_interface: "{{ _networking_setup_nics | community.general.json_query(query) }}"
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['trunk_mac'] }}'].name | [0]"
       with_items:

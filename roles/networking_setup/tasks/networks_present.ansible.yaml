@@ -13,8 +13,8 @@
       ovirt.ovirt.ovirt_network:
         name: "{{ storage_network_name }}"
         clusters:
-          - name: Default
-        data_center: Default
+          - name: "{{ networking_setup_cluster }}"
+        data_center: "{{ networking_setup_data_center }}"
         vm_network: false
         auth: "{{ ovirt_auth }}"
 
@@ -22,8 +22,8 @@
       ovirt.ovirt.ovirt_network:
         name: "{{ item.name }}"
         clusters:
-          - name: Default
-        data_center: Default
+          - name: "{{ networking_setup_cluster }}"
+        data_center: "{{ networking_setup_data_center }}"
         vm_network: true
         vlan_tag: "{{ item.vlan_tag }}"
         auth: "{{ ovirt_auth }}"
@@ -32,7 +32,7 @@
     - name: Remove vm traffic from mgmt
       ovirt.ovirt.ovirt_network:
         name: ovirtmgmt
-        data_center: Default
+        data_center: "{{ networking_setup_data_center }}"
         vm_network: false
         auth: "{{ ovirt_auth }}"
 

@@ -1,0 +1,35 @@
+argument_specs:
+  main:
+    short_description: Role for configuring storage.
+    description:
+      - Role for configuring storage.
+      - Adds nfs storage to the storage domain. Uses the first node from inventory group [ovirt_nodes] to attach the storage to engine.
+        
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
+    author: Jakub Kozielski
+    options:
+      setup_storage_address:
+        type: str
+        default: [storage_address]
+        description:
+          - Address of the nfs host.
+          - Defaults to the hosts [storage_address] variable.
+      
+      setup_storage_data_center:
+        type: str
+        default: Default
+        description: Name of the data center where the storage should be created.
+      
+      setup_storage_domain:
+        type: str
+        default: [storage_domain_name]
+        description:
+          - Name of the created storage domain.
+          - Defaults to the hosts [storage_domain_name] variable
+      
+      setup_storage_path:
+        type: str
+        default: [storage_path]
+        description:
+          - Path to the nfs storage.
+          - Defaults to the hosts [storage_path] variable

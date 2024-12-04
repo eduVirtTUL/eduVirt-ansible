@@ -12,10 +12,10 @@
       ovirt.ovirt.ovirt_storage_domain:
         state: present
         host: "{{ groups['ovirt_nodes'][0] }}"
-        data_center: Default
+        data_center: "{{ setup_storage_data_center }}"
         name: "{{ storage_domain_name }}"
         nfs:
-          address: "{{ storage_address }}"
+          address: "{{ setup_storage_address }}"
           path: "{{ storage_path }}"
         auth: "{{ ovirt_auth }}"
 

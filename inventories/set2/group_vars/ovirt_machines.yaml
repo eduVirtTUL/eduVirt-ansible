@@ -1,6 +1,5 @@
 ansible_ssh_private_key_file: ssh_keys/ssh_key
 ansible_user: root
-ovirt_engine_package_version: centos-release-ovirt45
 
 storage_domain_name: storage_domain
 storage_network_name: storage_network
