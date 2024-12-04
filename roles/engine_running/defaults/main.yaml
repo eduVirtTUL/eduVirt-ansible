@@ -1,0 +1,5 @@
+engine_running_alternative_python_path: /usr/bin/python3.11
+engine_running_answer_file_path: templates/ovirt-answer.txt.j2
+engine_running_min_python_version: 3.11.0
+engine_running_ovirt_version: 4.5
+engine_running_setup_offline: true

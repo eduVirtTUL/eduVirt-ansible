@@ -6,8 +6,8 @@
 
 - name: Change engine python interpreter version
   ansible.builtin.set_fact:
-    ansible_python_interpreter: /usr/bin/python3.11
-  when: ansible_python_version is ansible.builtin.version('3.11.0', '<')
+    ansible_python_interpreter: "{{ engine_running_alternative_python_path }}"
+  when: ansible_python_version is ansible.builtin.version(engine_running_min_python_version, '<')
 
 
 # https://github.com/oVirt/ovirt-ansible-collection/tree/master/roles/engine_setup
@@ -15,6 +15,6 @@
   ansible.builtin.include_role:
     name: ovirt.ovirt.engine_setup
   vars:
-    ovirt_engine_setup_answer_file_path: templates/ovirt-answer.txt.j2
-    ovirt_engine_setup_version: 4.5
-    ovirt_engine_setup_offline: true
+    ovirt_engine_setup_answer_file_path: "{{ engine_running_answer_file_path }}"
+    ovirt_engine_setup_version: "{{ engine_running_ovirt_version }}"
+    ovirt_engine_setup_offline: "{{ engine_running_setup_offline }}"

@@ -11,7 +11,7 @@
 
     - name: Add hosts
       ovirt.ovirt.ovirt_host:
-        cluster: Default
+        cluster: "{{ hosts_added_cluster }}"
         name: "{{ item }}"
         address: "{{ hostvars[item]['ansible_host'] }}"
         public_key: true
