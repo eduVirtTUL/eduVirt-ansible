@@ -1,0 +1,106 @@
+argument_specs:
+  main:
+    short_description: Role for configuring the keycloak instance for ovirt.
+    description:
+      - Role for configuring the keycloak instance for ovirt.
+      - >
+        Creates a internal keycloak client for and saves the secret to the filesystem where the role was invocated.
+        Creates a set of users for testing purposes. 
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
+    author: Jakub Kozielski
+    options:
+      keycloak_configured_client_id: 
+        type: str
+        default: admin-cli
+        description: Client used to connect to the keycloak
+
+      keycloak_configured_client_secret:
+        type: str
+        default: ""
+        description: Client secret used to connect to the keycloak
+
+      keycloak_configured_eduvirt_client_id:
+        type: str
+        default: eduVirtDev
+        description: Name of the created client.
+      
+      keycloak_configured_keycloak_admin_user:
+        type: str
+        default: admin
+        description: Username used to connect to the keycloak
+      
+      keycloak_configured_keycloak_keycloak_admin_password:
+        type: str
+        default: "[ovirt_admin_password]"
+        description:
+          - Password used to connect to the keycloak
+          - Defaults to the hosts [ovirt_admin_password] variable
+      
+      keycloak_configured_keycloak_realm:
+        type: str
+        default: master
+        description: Keycloak realm to connect to.
+      
+      keycloak_configured_keycloak_url:
+        type: str
+        default: "https://[ansible_host]/ovirt-engine-auth"
+        description:
+          - URL to the keycloak instance.
+          - Address defaults to the hosts [ansible_host] variable.
+      
+      keycloak_configured_realm:
+        type: str
+        default: ovirt-internal
+        description: Name of the realm where the changes will be made
+
+      keycloak_configured_validate_certs:
+        type: bool
+        default: false
+        description: Whether to validate certs when connecting to keycloak
+      
+      keycloak_configured_redirect_uris:
+        type: list
+        elements: str
+        default:
+          - http://localhost:8080/auth/callback
+        description: List of callback URL to add to the configured client.
+      
+      keycloak_configured_users:
+        type: list
+        elements: dict
+        default: See keycloak_configured/defaults/main/.yaml for default value.
+        options:
+          username:
+            type: str
+            required: true
+            description: Username of the account
+          
+          firstName:
+            type: str
+            required: true
+            description: First name of the account.
+          
+          lastName:
+            type: str
+            required: true
+            description: Last name of the account.
+          
+          email:
+            type: str
+            required: true
+            description: Email for the account.
+          
+          enabled:
+            type: bool
+            required: true
+            description: State of the account after creation.
+          
+          password:
+            type: str
+            required: true
+            description: Password for the account.
+          
+          temporary:
+            type: bool
+            required: true
+            description: Whether the created account is temporary.

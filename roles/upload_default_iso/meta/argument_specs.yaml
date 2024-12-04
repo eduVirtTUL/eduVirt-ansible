@@ -7,6 +7,7 @@ argument_specs:
         It creates a kickstart file and puts it into a virtual disk, that is then uploaded to ovirt.
         A vm is created and the kickstart disk in used. The resulting vm is turned into a template.
       - The virutal disk is created on the host specified in the role. An access to loop devices is required.
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
       - Supports only RHEL based os.
     author: Jakub Kozielski
     options:

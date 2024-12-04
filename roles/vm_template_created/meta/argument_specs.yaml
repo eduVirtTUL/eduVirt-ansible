@@ -3,8 +3,8 @@ argument_specs:
     short_description: Role for uploading an iso to the ovirt.
     description:
       - Role for uploading an iso to the ovirt.
-      - >
-        Downloads a specified iso image and uploads it to the ovirt as a disk.
+      - Downloads a specified iso image and uploads it to the ovirt as a disk.
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
       - A RHEL based os is suggested.
     author: Jakub Kozielski
     options:
