@@ -1,0 +1,1 @@
+hosts_prepared_engine: "{{ hostvars['engine']['ansible_host'] }}"

@@ -1,7 +1,7 @@
 ---
 - name: Get the key using api
   ansible.builtin.uri:
-    url: https://{{ hostvars['engine']['ansible_host'] }}/ovirt-engine/services/pki-resource?format=OPENSSH-PUBKEY&resource=engine-certificate
+    url: "https://{{ hosts_prepared_engine }}/ovirt-engine/services/pki-resource?format=OPENSSH-PUBKEY&resource=engine-certificate"
     method: GET
     return_content: true
     validate_certs: false

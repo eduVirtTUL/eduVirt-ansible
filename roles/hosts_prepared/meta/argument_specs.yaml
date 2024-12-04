@@ -1,0 +1,14 @@
+argument_specs:
+  main:
+    short_description: Role for preparing hosts to add to the engine.
+    description:
+      - Role for preparing hosts to add to the engine.
+      - Retrieves ssh public key of the engine, adds it to the host and installs cockpit.
+    author: Jakub Kozielski
+    options:
+      hosts_prepared_engine:
+        type: str
+        default: "[hostvars['engine']['ansible_host']]"
+        description: 
+          - Address of the engine.
+          - Defaults to [ansible_host] of the engine host.
