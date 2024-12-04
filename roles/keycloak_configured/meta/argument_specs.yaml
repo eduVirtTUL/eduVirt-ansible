@@ -35,19 +35,19 @@ argument_specs:
         description:
           - Password used to connect to the keycloak
           - Defaults to the hosts [ovirt_admin_password] variable
-      
+
       keycloak_configured_keycloak_realm:
         type: str
         default: master
         description: Keycloak realm to connect to.
-      
+
       keycloak_configured_keycloak_url:
         type: str
         default: "https://[ansible_host]/ovirt-engine-auth"
         description:
           - URL to the keycloak instance.
           - Address defaults to the hosts [ansible_host] variable.
-      
+
       keycloak_configured_realm:
         type: str
         default: ovirt-internal
@@ -57,14 +57,14 @@ argument_specs:
         type: bool
         default: false
         description: Whether to validate certs when connecting to keycloak
-      
+
       keycloak_configured_redirect_uris:
         type: list
         elements: str
         default:
           - http://localhost:8080/auth/callback
         description: List of callback URL to add to the configured client.
-      
+
       keycloak_configured_users:
         type: list
         elements: dict
@@ -74,32 +74,32 @@ argument_specs:
             type: str
             required: true
             description: Username of the account
-          
+
           firstName:
             type: str
             required: true
             description: First name of the account.
-          
+
           lastName:
             type: str
             required: true
             description: Last name of the account.
-          
+
           email:
             type: str
             required: true
             description: Email for the account.
-          
+
           enabled:
             type: bool
             required: true
             description: State of the account after creation.
-          
+
           password:
             type: str
             required: true
             description: Password for the account.
-          
+
           temporary:
             type: bool
             required: true

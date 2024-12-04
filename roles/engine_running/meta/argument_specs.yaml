@@ -16,22 +16,22 @@ argument_specs:
             If ansible is running a python version that does not satisfy [engine_running_min_python_version]
             a change will be made to the interpreter provided here. It usefull when installing the engine on clean system,
             as it allows to change the interpreter from the default one provided with the system.
-      
+
       engine_running_answer_file_path:
         type: str
         default: templates/ovirt-answer.txt.j2
         description: Path to the answers file for engine setup.
-      
+
       engine_running_min_python_version:
         type: str
         default: 3.11.0
         description: Minimal python version required for later steps.
-      
+
       engine_running_ovirt_version:
         type: str
         default: 4.5
         description: Engine version to install.
-      
+
       engine_running_setup_offline:
         type: bool
         default: true
