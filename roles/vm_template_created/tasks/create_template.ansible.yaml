@@ -45,7 +45,7 @@
         auth: "{{ ovirt_auth }}"
         pattern: "name={{ vm_template_created_template_name }} and cluster={{ vm_template_created_cluster }}"
       register: _template_vm_query
-      retries: "{{ vm_template_created_template_creation_timeout / 2 }}" # number of retries equals time/2, because retries are made every 0.5 min
+      retries: "{{ vm_template_created_template_creation_timeout * 2 }}" # number of retries equals time*2, because retries are made every 0.5 min
       delay: 30
       until: _template_vm_query.ovirt_vms[0].status == "down"
 

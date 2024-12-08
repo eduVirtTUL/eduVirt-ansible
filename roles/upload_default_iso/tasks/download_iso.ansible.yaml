@@ -22,8 +22,8 @@
 # Suppress failure of the stage regardless of the return of checksum check
 - name: Check existing iso checksum
   ansible.builtin.command: >
-    "sha256sum -c {{ (_upload_default_iso_downloaded_checksum.dest is defined) |
-     ternary(_upload_default_iso_downloaded_checksum.dest, _upload_default_iso_bare_checksum.dest) }}"
+    sha256sum -c {{ (_upload_default_iso_downloaded_checksum.dest is defined) |
+     ternary(_upload_default_iso_downloaded_checksum.dest, _upload_default_iso_bare_checksum.dest) }}
   register: _upload_default_iso_checksum_result
   changed_when: false
   failed_when: false
