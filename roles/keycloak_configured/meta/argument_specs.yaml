@@ -6,7 +6,6 @@ argument_specs:
       - >
         Creates a internal keycloak client for and saves the secret to the filesystem where the role was invocated.
         Creates a set of users for testing purposes.
-      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
     author: Jakub Kozielski
     options:
       keycloak_configured_client_id:

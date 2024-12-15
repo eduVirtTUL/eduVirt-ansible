@@ -10,6 +10,6 @@
     vm_template_created_iso_disk_name: "{{ default_iso_name }}"
     vm_template_created_template_nic_network: "{{ vm_networks[0].name }}"
   roles:
-    - upload_default_iso
+    # - upload_default_iso
     - keycloak_configured
-    - vm_template_created
+    # - vm_template_created
