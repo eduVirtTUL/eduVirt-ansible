@@ -56,9 +56,12 @@
         vm_name: "{{ vm_template_created_template_name }}"
         name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
 
-    - name: Success
-      ansible.builtin.debug:
-        msg: "Success"
+    - name: Remove nic from vm
+      ovirt.ovirt.ovirt_nic:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}_nic_1"
+        vm: "{{ vm_template_created_template_name }}"
+        state: absent
 
     - name: Change vm to template
       ovirt.ovirt.ovirt_template:

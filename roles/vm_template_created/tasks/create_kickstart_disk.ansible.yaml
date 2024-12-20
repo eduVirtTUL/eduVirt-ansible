@@ -24,6 +24,7 @@
 - name: Mount disk to filesystem
   ansible.posix.mount:
     state: mounted
+    opts: defaults,noauto
     path: "/mnt/{{ vm_template_created_kickstart_disk_name }}"
     fstype: ext4
     src: "/dev/{{ vm_template_created_loop_devive }}"
@@ -37,7 +38,7 @@
 
 - name: Unmount disk
   ansible.posix.mount:
-    state: unmounted
+    state: absent
     path: "/mnt/{{ vm_template_created_kickstart_disk_name }}"
 
 - name: Detach loop device

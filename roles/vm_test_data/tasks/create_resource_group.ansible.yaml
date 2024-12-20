@@ -1,0 +1,10 @@
+- name: Register resource group name
+  ansible.builtin.set_fact:
+    _vm_test_data_resource_group_name: "rg_{{ _vm_test_data_resource_group_index }}"
+
+- name: Create vm
+  ansible.builtin.include_tasks:
+    file: tasks/create_vm.ansible.yaml
+  loop: "{{ vm_test_data_resource_group_template }}"
+  loop_control:
+    loop_var: _vm_test_data_vm

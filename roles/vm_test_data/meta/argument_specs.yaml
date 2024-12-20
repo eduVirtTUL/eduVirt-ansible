@@ -1,0 +1,63 @@
+argument_specs:
+  main:
+    short_description: Role for creating a test vms.
+    description:
+      - Role for creating a test vms.
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
+    author: Jakub Kozielski
+    options:
+      vm_test_data_cluster:
+        type: str
+        default: Default
+        description: Name of the cluster where the vms should be created.
+
+      vm_test_data_storage_domain:
+        type: str
+        default: storage_domain
+        description: Name of the storage domains where the vms should be created.
+
+      vm_test_data_resource_group_number:
+        type: int
+        default: storage_domain
+        description: Number of resource groups to create
+
+      vm_test_data_template:
+        type: str
+        default: Fedora_Server_41_template
+        description: Name of template used to crate vms
+
+      vm_test_data_resource_group_template:
+        type: list
+        elements: dict
+        default: See vm_test_data/defaults/main.yaml
+        description: List of vms creating a resource group.
+        options:
+          name:
+            type: str
+            required: true
+            description: Name of the vm in resource group
+          nics:
+            type: list
+            elements: str
+            required: true
+            description: 
+              - List of networks to create and attach the vm to.
+              - Set to null to create nic but not connect it to any network.
+
+      vm_test_data_free_vms_template:
+        type: list
+        elements: dict
+        default: See vm_test_data/defaults/main.yaml
+        description: List of vms not related to resource group.
+        options:
+          name:
+            type: str
+            required: true
+            description: Name of the vm.
+          nics:
+            type: list
+            elements: str
+            required: true
+            description: 
+              - List of networks to create and attach the vm to.
+              - Set to null to create nic but not connect it to any network.

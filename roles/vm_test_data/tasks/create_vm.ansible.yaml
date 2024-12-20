@@ -1,0 +1,20 @@
+- name: Register vm name
+  ansible.builtin.set_fact:
+    _vm_test_data_vm_name: "{{ (_vm_test_data_resource_group_name ~ '_' if _vm_test_data_resource_group_name is defined else '') ~ _vm_test_data_vm.name }}"
+
+- name: Create vm
+  ovirt.ovirt.ovirt_vm:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ _vm_test_data_vm_name }}"
+    state: present
+    template: "{{ vm_test_data_template }}"
+    storage_domain: "{{ vm_test_data_storage_domain }}"
+    cluster: "{{ vm_test_data_cluster }}"
+
+- name: Create nics
+  ansible.builtin.include_tasks:
+    file: tasks/create_nics.ansible.yaml
+  loop: "{{ _vm_test_data_vm.nics }}"
+  loop_control:
+    loop_var: _vm_test_data_nic_network
+    index_var: _vm_test_data_nic_index

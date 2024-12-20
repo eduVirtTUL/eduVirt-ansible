@@ -1,0 +1,30 @@
+---
+- name: Create kickstart disk and template vm
+  block:
+    - name: Authorize to engine
+      ovirt.ovirt.ovirt_auth:
+        url: https://{{ ansible_host }}/ovirt-engine/api
+        insecure: true
+        username: "{{ ovirt_admin_username }}"
+        password: "{{ ovirt_admin_password }}"
+        state: present
+
+    - name: Create free vms
+      ansible.builtin.include_tasks:
+        file: tasks/create_vm.ansible.yaml
+      loop: "{{ vm_test_data_free_vms_template }}"
+      loop_control:
+        loop_var: _vm_test_data_vm
+
+    - name: Create Resource Group
+      ansible.builtin.include_tasks:
+        file: tasks/create_resource_group.ansible.yaml
+      loop: "{{ range(0, vm_test_data_resource_group_number) }}"
+      loop_control:
+        loop_var: _vm_test_data_resource_group_index
+
+  always:
+    - name: Always revoke the SSO token
+      ovirt.ovirt.ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

@@ -32,3 +32,8 @@
     - upload_default_iso
     - keycloak_configured
     - vm_template_created
+
+- name: Create test data
+  hosts: engine
+  roles:
+    - vm_test_data
