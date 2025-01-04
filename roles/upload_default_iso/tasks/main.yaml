@@ -20,7 +20,7 @@
     - name: Upload iso disk
       ovirt.ovirt.ovirt_disk:
         name: "{{ upload_default_iso_name }}"
-        upload_image_path: "/root/{{ _upload_default_iso_filename }}"
+        upload_image_path: "{{ upload_default_iso_working_dir }}/{{ _upload_default_iso_filename }}"
         storage_domain: "{{ upload_default_iso_storage_domain_name }}"
         wait: true
         format: raw

@@ -53,12 +53,15 @@ argument_specs:
         default: Red Hat Enterprise Linux 9.x x64
         description: Ovirt os label for the vm template
 
-      vm_template_created_template_cpu_cores:
+      vm_template_created_template_cpu_cores_installation:
         type: int
         default: 4
-        description:
-          - Number of vcpu given to the vm template.
-          - Note that is the same as the number of vcpu given to the vm during os installation.
+        description: Number of vcpu given to the vm template during os installation.
+
+      vm_template_created_template_cpu_cores:
+        type: int
+        default: 2
+        description: Number of vcpu given to the vm template.
 
       vm_template_created_template_creation_timeout:
         type: int
@@ -70,10 +73,15 @@ argument_specs:
         default: 8GiB
         description: Size of the main disk in the template in a [number][unit] format.
 
-      vm_template_created_template_memory:
+      vm_template_created_template_memory_installation:
         type: str
         default: 4GiB
-        description: Amount of the memory given to the vm template [number][unit] format.
+        description: Amount of the memory given to the vm template during os installation in [number][unit] format.
+
+      vm_template_created_template_memory:
+        type: str
+        default: 2GiB
+        description: Amount of the memory given to the vm template in [number][unit] format.
 
       vm_template_created_template_name:
         type: str
@@ -84,3 +92,8 @@ argument_specs:
         type: str
         required: true
         description: Name of the virtual network attached to the vm template.
+
+      vm_template_created_working_dir:
+        type: str
+        required: true
+        description: Location where the disk will be created.

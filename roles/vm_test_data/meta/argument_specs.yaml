@@ -2,7 +2,7 @@ argument_specs:
   main:
     short_description: Role for creating a test vms.
     description:
-      - Role for creating a test vms.
+      - Role for creating test vms.
       - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
     author: Jakub Kozielski
     options:
@@ -38,9 +38,9 @@ argument_specs:
             description: Name of the vm in resource group
           nics:
             type: list
-            elements: str
+            elements: raw
             required: true
-            description: 
+            description:
               - List of networks to create and attach the vm to.
               - Set to null to create nic but not connect it to any network.
 
@@ -56,8 +56,8 @@ argument_specs:
             description: Name of the vm.
           nics:
             type: list
-            elements: str
+            elements: raw
             required: true
-            description: 
+            description:
               - List of networks to create and attach the vm to.
               - Set to null to create nic but not connect it to any network.

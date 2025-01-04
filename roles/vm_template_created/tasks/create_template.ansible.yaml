@@ -15,8 +15,8 @@
         name: "{{ vm_template_created_template_name }}"
         cd_iso: "{{ vm_template_created_iso_disk_name }}"
         cluster: "{{ vm_template_created_cluster }}"
-        cpu_cores: "{{ vm_template_created_template_cpu_cores }}"
-        memory: "{{ vm_template_created_template_memory }}"
+        cpu_cores: "{{ vm_template_created_template_cpu_cores_installation }}"
+        memory: "{{ vm_template_created_template_memory_installation }}"
         disk_format: cow
         disks:
           - name: "{{ template_disk.disk.name }}"
@@ -62,6 +62,20 @@
         name: "{{ vm_template_created_template_name }}_nic_1"
         vm: "{{ vm_template_created_template_name }}"
         state: absent
+
+    - name: Change amount of resources assigned to vm
+      ovirt.ovirt.ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}"
+        cpu_cores: "{{ vm_template_created_template_cpu_cores }}"
+        memory: "{{ vm_template_created_template_memory }}"
+        memory_guaranteed: "{{ vm_template_created_template_memory }}"
+        # get number from variable, multiply by 4 and attach the unit
+        memory_max: >-
+          {{
+            (vm_template_created_template_memory | regex_search('^\d+')) | int * 4 ~
+            (vm_template_created_template_memory | regex_search('[a-zA-Z]+$'))
+          }}
 
     - name: Change vm to template
       ovirt.ovirt.ovirt_template:

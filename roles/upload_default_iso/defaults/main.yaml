@@ -3,3 +3,4 @@
 # upload_default_iso_location:
 # upload_default_iso_name:
 upload_default_iso_storage_domain_name: "{{ storage_domain_name }}"
+upload_default_iso_working_dir: "/root"

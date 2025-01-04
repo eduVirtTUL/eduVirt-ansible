@@ -1,7 +1,7 @@
 - name: Download image checksum
   ansible.builtin.get_url:
     url: "{{ upload_default_iso_checksum_location }}"
-    dest: "/root/{{ upload_default_iso_name }}-CHECKSUM"
+    dest: "{{ upload_default_iso_working_dir }}/{{ upload_default_iso_name }}-CHECKSUM"
     mode: '0400'
   register: _upload_default_iso_downloaded_checksum
   when: upload_default_iso_checksum is undefined
@@ -9,7 +9,7 @@
 - name: Save checksum to file
   ansible.builtin.copy:
     content: "{{ upload_default_iso_checksum }}"
-    dest: "/root/{{ upload_default_iso_name }}.iso-CHECKSUM"
+    dest: "{{ upload_default_iso_working_dir }}/{{ upload_default_iso_name }}.iso-CHECKSUM"
     mode: '0400'
   register: _upload_default_iso_bare_checksum
   when: upload_default_iso_checksum is defined
@@ -31,6 +31,6 @@
 - name: Download default image
   ansible.builtin.get_url:
     url: "{{ upload_default_iso_location }}"
-    dest: "/root/{{ _upload_default_iso_filename }}"
+    dest: "{{ upload_default_iso_working_dir }}/{{ _upload_default_iso_filename }}"
     mode: '0400'
   when: _upload_default_iso_filename in _upload_default_iso_checksum_result.stderr

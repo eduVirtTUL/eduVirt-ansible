@@ -12,7 +12,7 @@
 #   roles:
 #     # - upload_default_iso
 #     # - keycloak_configured
-    # - vm_template_created
+#     - vm_template_created
 
 - name: Create test data
   hosts: engine

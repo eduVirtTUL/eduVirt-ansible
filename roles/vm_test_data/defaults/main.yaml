@@ -3,32 +3,32 @@ vm_test_data_cluster: Default
 vm_test_data_storage_domain: storage_domain
 vm_test_data_resource_group_number: 2
 vm_test_data_resource_group_template:
-  - name: vm_0
-    nics:
-      - vm_mgmt
-      - null
-      - null
-      - vm_public_net
   - name: vm_1
     nics:
       - vm_mgmt
+      - null
+      - null
+      - vm_public_net
+  - name: vm_2
+    nics:
+      - vm_mgmt
       - vm_public_net
       - null
       - null
-  - name: vm_2
+  - name: vm_3
     nics:
       - null
       - null
       - vm_mgmt
       - null
 vm_test_data_free_vms_template:
-  - name: vm_free_0
+  - name: vm_free_1
     nics:
       - vm_mgmt
       - null
       - null
       - null
-  - name: vm_free_1
+  - name: vm_free_2
     nics:
       - vm_mgmt
       - null

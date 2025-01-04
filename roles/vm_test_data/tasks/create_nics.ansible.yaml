@@ -1,6 +1,6 @@
 - name: Create nic
   ovirt.ovirt.ovirt_nic:
-    name: "nic_{{ _vm_test_data_nic_index }}"
+    name: "nic_{{ _vm_test_data_nic_index + 1 }}"
     auth: "{{ ovirt_auth }}"
     vm: "{{ _vm_test_data_vm_name }}"
     network: "{{ _vm_test_data_nic_network | default(omit) }}"

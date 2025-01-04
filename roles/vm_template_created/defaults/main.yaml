@@ -6,9 +6,12 @@ vm_template_created_kickstart_filename: ks.cfg
 vm_template_created_kickstart_ovirt_disk_name: kickstart_disk
 vm_template_created_loop_devive: loop0
 vm_template_created_operating_system_vm_label: Red Hat Enterprise Linux 9.x x64
-vm_template_created_template_cpu_cores: 4
+vm_template_created_template_cpu_cores_installation: 4
+vm_template_created_template_cpu_cores: 2
 vm_template_created_template_creation_timeout: 30 # in minutes
 vm_template_created_template_disk_size: 8GiB
-vm_template_created_template_memory: 4GiB
+vm_template_created_template_memory_installation: 4GiB
+vm_template_created_template_memory: 2GiB
 vm_template_created_template_name: "{{ vm_template_created_iso_disk_name }}_template"
+vm_template_created_working_dir: "/root"
 # vm_template_created_template_nic_network:

@@ -44,3 +44,8 @@ argument_specs:
         description:
           - Name of the storage domain where the iso will be placed.
           - Defaults to hosts [storage_domain_name] variable.
+
+      upload_default_iso_working_dir:
+        type: str
+        default: "/root"
+        description: Location where the files will be downloaded.
