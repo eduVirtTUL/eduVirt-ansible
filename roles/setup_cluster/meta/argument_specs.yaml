@@ -1,0 +1,32 @@
+argument_specs:
+  main:
+    short_description: Role for installing configuring a cluster.
+    description:
+      - Role for installing configuring a cluster.
+      - Performs a very basic cluster configuration, including creation before adding hosts to it.
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for configuring engine, to be set for host.
+    author: Jakub Kozielski
+    options:
+      setup_cluster_datacenter:
+        type: str
+        default: Default
+        description: Datacenter where the cluster will be / is located.
+
+      setup_cluster_cluster_name:
+        type: str
+        default: Default
+        description: Name of the cluster to manage.
+
+      setup_cluster_compability_version:
+        type: str
+        default: 4.7
+        description:
+          - Compability version for the cluster.
+          - See https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_cluster_module.html#parameter-compatibility_version
+
+      setup_cluster_cpu_type:
+        type: str
+        required: true
+        description:
+          - CPU type for the cluster.
+          - See https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_cluster_module.html#parameter-cpu_type

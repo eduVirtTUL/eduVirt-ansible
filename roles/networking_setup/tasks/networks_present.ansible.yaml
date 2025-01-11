@@ -14,8 +14,8 @@
         name: "{{ storage_network_name }}"
         clusters:
           - name: "{{ networking_setup_cluster }}"
+            required: false
         data_center: "{{ networking_setup_data_center }}"
-        vm_network: false
         auth: "{{ ovirt_auth }}"
 
     - name: Add VM networks to cluster
@@ -23,8 +23,8 @@
         name: "{{ item.name }}"
         clusters:
           - name: "{{ networking_setup_cluster }}"
+            required: false
         data_center: "{{ networking_setup_data_center }}"
-        vm_network: true
         vlan_tag: "{{ item.vlan_tag }}"
         auth: "{{ ovirt_auth }}"
       with_items: "{{ vm_networks }}"

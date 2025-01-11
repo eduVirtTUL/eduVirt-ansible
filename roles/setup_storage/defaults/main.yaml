@@ -2,3 +2,4 @@ setup_storage_address: "{{ storage_address }}"
 setup_storage_data_center: Default
 setup_storage_domain: "{{ storage_domain_name }}"
 setup_storage_path: "{{ storage_path }}"
+setup_storage_connecting_host: "{{ groups['ovirt_nodes'][0] }}"

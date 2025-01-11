@@ -15,6 +15,13 @@ argument_specs:
           - Address of the nfs host.
           - Defaults to the hosts [storage_address] variable.
 
+      setup_storage_connecting_host:
+        type: str
+        default: groups['ovirt_nodes'][0]
+        description:
+          - Host which will be used to connect storage domain to datacenter.
+          - Defaults to the first host in ovirt_nodes group.
+
       setup_storage_data_center:
         type: str
         default: Default

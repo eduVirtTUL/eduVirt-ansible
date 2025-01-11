@@ -1,6 +1,8 @@
 - name: Register vm name
   ansible.builtin.set_fact:
-    _vm_test_data_vm_name: "{{ (_vm_test_data_resource_group_name ~ '_' if _vm_test_data_resource_group_name is defined else '') ~ _vm_test_data_vm.name }}"
+    _vm_test_data_vm_name:
+      "{{ (_vm_test_data_resource_group_name ~ '_' if _vm_test_data_resource_group_name is defined else '')
+       ~ _vm_test_data_vm.name ~ '_' ~ vm_test_data_cluster }}"
 
 - name: Create vm
   ovirt.ovirt.ovirt_vm:

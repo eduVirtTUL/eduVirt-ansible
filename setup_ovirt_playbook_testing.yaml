@@ -1,0 +1,95 @@
+---
+- name: Enable ovirt repositories
+  hosts: ovirt_machines
+  gather_facts: false
+  roles:
+    - ovirt_repository_installed
+
+- name: Install engine
+  hosts: engine
+  roles:
+    - engine_running
+
+- name: Prepare hosts
+  gather_facts: false
+  hosts: ovirt_nodes
+  roles:
+    - hosts_prepared
+
+- name: Setup first cluster
+  hosts: engine
+  vars:
+    setup_cluster_cpu_type: AMD EPYC
+    setup_cluster_cluster_name: cluster_1
+  roles:
+    - setup_cluster
+
+- name: Setup first cluster
+  hosts: engine
+  vars:
+    setup_cluster_cpu_type: Secure AMD EPYC
+    setup_cluster_cluster_name: cluster_2
+  roles:
+    - setup_cluster
+
+
+- name: Add nodes to first cluster
+  hosts: engine
+  vars:
+    hosts_added_hosts: "{{ groups['cluster_1'] }}"
+    hosts_added_cluster: cluster_1
+  roles:
+    - hosts_added
+
+- name: Add nodes to second cluster
+  hosts: engine
+  vars:
+    hosts_added_hosts: "{{ groups['cluster_2'] }}"
+    hosts_added_cluster: cluster_2
+  roles:
+    - hosts_added
+
+- name: First cluster networking setup
+  hosts: engine
+  vars:
+    networking_setup_hosts: "{{ groups['cluster_1'] }}"
+    networking_setup_cluster: cluster_1
+  roles:
+    - networking_setup
+
+- name: Second cluster networking setup
+  hosts: engine
+  vars:
+    networking_setup_hosts: "{{ groups['cluster_2'] }}"
+    networking_setup_cluster: cluster_2
+  roles:
+    - networking_setup
+
+- name: Setup storage, upload default iso
+  hosts: engine
+  vars:
+    upload_default_iso_checksum_location: "{{ default_iso_checksum_location }}"
+    upload_default_iso_name: "{{ default_iso_name }}"
+    upload_default_iso_location: "{{ default_iso_location }}"
+    vm_template_created_iso_disk_name: "{{ default_iso_name }}"
+    vm_template_created_template_nic_network: "{{ vm_networks[0].name }}"
+    vm_template_created_cluster: cluster_1
+  roles:
+    - setup_storage
+    - upload_default_iso
+    - keycloak_configured
+    - vm_template_created
+
+- name: Create test data in first cluster
+  hosts: engine
+  vars:
+    vm_test_data_cluster: cluster_1
+  roles:
+    - vm_test_data
+
+- name: Create test data in second cluster
+  hosts: engine
+  vars:
+    vm_test_data_cluster: cluster_2
+  roles:
+    - vm_test_data

@@ -18,7 +18,8 @@
             netmask: 255.255.255.0
             boot_protocol: static
         auth: "{{ ovirt_auth }}"
-      with_items: "{{ groups['ovirt_nodes'] }}"
+      with_items:
+        - "{{ networking_setup_hosts }}"
 
     - name: Setup vm networks
       ovirt.ovirt.ovirt_host_network:
@@ -28,7 +29,7 @@
           - name: "{{ item[1].name }}"
             boot_protocol: none
         auth: "{{ ovirt_auth }}"
-      loop: "{{ groups['ovirt_nodes'] | ansible.builtin.product(vm_networks) }}"
+      loop: "{{ networking_setup_hosts | ansible.builtin.product(vm_networks) }}"
 
   always:
     - name: Always revoke the SSO token

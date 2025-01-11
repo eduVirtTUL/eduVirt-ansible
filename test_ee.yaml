@@ -1,20 +1,29 @@
 ---
-# - name: Test ee
-#   hosts: engine
-#   gather_facts: false
-#   vars:
-#     upload_default_iso_checksum_location: "{{ default_iso_checksum_location }}"
-#     upload_default_iso_name: "{{ default_iso_name }}"
-#     # upload_default_iso_checksum: "{{ default_iso_checksum }}"
-#     upload_default_iso_location: "{{ default_iso_location }}"
-#     vm_template_created_iso_disk_name: "{{ default_iso_name }}"
-#     vm_template_created_template_nic_network: "{{ vm_networks[0].name }}"
-#   roles:
-#     # - upload_default_iso
-#     # - keycloak_configured
-#     - vm_template_created
-
-- name: Create test data
+- name: Test
   hosts: engine
-  roles:
-    - vm_test_data
+  tasks:
+    - name: Authorize and add hosts
+      block:
+        - name: Authorize to engine
+          ovirt.ovirt.ovirt_auth:
+            url: https://{{ ansible_host }}/ovirt-engine/api
+            insecure: true
+            username: "{{ ovirt_admin_username }}"
+            password: "{{ ovirt_admin_password }}"
+            state: present
+
+        - name: Get all networks in datacenter
+          ovirt.ovirt.ovirt_network_info:
+            auth: "{{ ovirt_auth }}"
+            pattern: "datacenter=Default"
+          register: result
+
+        - name: Debug
+          ansible.builtin.debug:
+            var: result
+
+      always:
+        - name: Always revoke the SSO token
+          ovirt.ovirt.ovirt_auth:
+            state: absent
+            ovirt_auth: "{{ ovirt_auth }}"

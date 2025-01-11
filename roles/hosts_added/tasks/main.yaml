@@ -23,7 +23,7 @@
         reboot_after_installation: false
       timeout: 1800 # 30 min, has to be set in both places otherwise it breaks for some undocumented reason
       with_items:
-        - "{{ groups['ovirt_nodes'] }}"
+        - "{{ hosts_added_hosts }}"
       register: _add_hosts
       async: 2100 # 35 min
       poll: 0

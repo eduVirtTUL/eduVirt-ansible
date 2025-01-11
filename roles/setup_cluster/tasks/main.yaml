@@ -1,4 +1,5 @@
-- name: Authorize and add storage
+---
+- name: Setup cluster
   block:
     - name: Authorize to engine
       ovirt.ovirt.ovirt_auth:
@@ -8,16 +9,14 @@
         password: "{{ ovirt_admin_password }}"
         state: present
 
-    - name: Add storage domain
-      ovirt.ovirt.ovirt_storage_domain:
-        state: present
-        host: "{{ setup_storage_connecting_host }}"
-        data_center: "{{ setup_storage_data_center }}"
-        name: "{{ storage_domain_name }}"
-        nfs:
-          address: "{{ setup_storage_address }}"
-          path: "{{ storage_path }}"
+    - name: Create first cluster
+      ovirt.ovirt.ovirt_cluster:
         auth: "{{ ovirt_auth }}"
+        data_center: "{{ setup_cluster_datacenter }}"
+        name: "{{ setup_cluster_cluster_name }}"
+        cpu_type: "{{ setup_cluster_cpu_type }}"
+        compatibility_version: "{{ setup_cluster_compability_version }}"
+        fence_enabled: false
 
   always:
     - name: Always revoke the SSO token

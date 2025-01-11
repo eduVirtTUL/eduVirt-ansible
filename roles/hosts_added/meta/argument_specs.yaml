@@ -3,7 +3,7 @@ argument_specs:
     short_description: Role for adding nodes to engine.
     description:
       - Role for adding nodes to engine.
-      - Adds hosts specified in inventory group [ovirt_nodes] as nodes to the engine running on the specified host.
+      - Adds nodes to the engine running on the specified host.
       - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication to ovirt, to be set for host.
     author: Jakub Kozielski
     options:
@@ -11,3 +11,10 @@ argument_specs:
         type: str
         default: Default
         description: Cluster to which add the nodes.
+
+      hosts_added_hosts:
+        type: list
+        required: true
+        description:
+          - Hosts from the inventory to be added to the engine.
+          - Use group['name_of_the_group']

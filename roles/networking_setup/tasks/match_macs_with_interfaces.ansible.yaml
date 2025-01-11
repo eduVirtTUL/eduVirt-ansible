@@ -14,7 +14,7 @@
     - name: Retrieve info about nodes
       ovirt.ovirt.ovirt_host_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "datacenter = {{ networking_setup_cluster }}"
+        pattern: "datacenter = {{ networking_setup_data_center }} and cluster = {{ networking_setup_cluster }}"
         follow: nics
       register: _networking_setup_nics
 
@@ -26,7 +26,7 @@
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['mgmt_mac'] }}'].name | [0]"
       with_items:
-        - "{{ groups['ovirt_nodes'] }}"
+        - "{{ networking_setup_hosts }}"
 
     - name: Match nics to storage macs
       delegate_to: "{{ item }}"
@@ -36,7 +36,7 @@
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['storage_mac'] }}'].name | [0]"
       with_items:
-        - "{{ groups['ovirt_nodes'] }}"
+        - "{{ networking_setup_hosts }}"
 
     - name: Match nics to vm network macs
       delegate_to: "{{ item }}"
@@ -46,7 +46,7 @@
       vars:
         query: "ovirt_hosts[?name=='{{ item }}'] | [0].nics[?mac.address == '{{ hostvars[item]['trunk_mac'] }}'].name | [0]"
       with_items:
-        - "{{ groups['ovirt_nodes'] }}"
+        - "{{ networking_setup_hosts }}"
 
   always:
     - name: Always revoke the SSO token

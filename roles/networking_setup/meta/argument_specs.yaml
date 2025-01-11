@@ -5,7 +5,7 @@ argument_specs:
       - Role for configuring the networking of nodes.
       - Configures management network by removing vm traffic, adds storage network to the node and trunkated network for vm's usage.
       - >
-        Nodes are taken from [ovirt_nodes] inventory group. Each of the hosts has to have
+        Nodes are taken from the specified inventory group. Each of the hosts has to have
         [mgmt_mac], [storage_mac], [trunk_mac] specified, which represent respective network interface mac addresses.
       - >
         Additionaly a [storage_ip] and [vm_networks] is needed, [storage_ip] for each of the nodes,
@@ -23,4 +23,12 @@ argument_specs:
 
       networking_setup_data_center:
         type: str
-        default: Data center where the networks should be created.
+        default: Default
+        description: Data center where the networks should be created.
+
+      networking_setup_hosts:
+        type: list
+        required: true
+        description:
+          - Hosts from the inventory to be added to the engine.
+          - Use group['name_of_the_group']

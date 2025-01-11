@@ -1,0 +1,4 @@
+setup_cluster_datacenter: Default
+setup_cluster_cluster_name: Default
+setup_cluster_compability_version: 4.7
+# setup_cluster_cpu_type:
