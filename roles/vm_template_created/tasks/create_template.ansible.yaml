@@ -4,10 +4,10 @@
     - name: Create disk for template vm
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
-        name: "{{ vm_template_created_template_name }}_os_disk"
+        name: "{{ vm_template_created_template_name }}_os_disk_creation"
         size: "{{ vm_template_created_template_disk_size }}"
         storage_domain: "{{ storage_domain_name }}"
-      register: template_disk
+      register: _vm_template_created_template_disk
 
     - name: Create vm
       ovirt.ovirt.ovirt_vm:
@@ -19,7 +19,7 @@
         memory: "{{ vm_template_created_template_memory_installation }}"
         disk_format: cow
         disks:
-          - name: "{{ template_disk.disk.name }}"
+          - id: "{{ _vm_template_created_template_disk.id }}"
             bootable: true
           - name: "{{ vm_template_created_kickstart_ovirt_disk_name }}"
         storage_domain: "{{ storage_domain_name }}"
@@ -76,6 +76,12 @@
             (vm_template_created_template_memory | regex_search('^\d+')) | int * 4 ~
             (vm_template_created_template_memory | regex_search('[a-zA-Z]+$'))
           }}
+
+    - name: Change template disk name
+      ovirt.ovirt.ovirt_disk:
+        auth: "{{ ovirt_auth }}"
+        name: "{{ vm_template_created_template_name }}_os_disk"
+        id: "{{ _vm_template_created_template_disk.id }}"
 
     - name: Change vm to template
       ovirt.ovirt.ovirt_template:

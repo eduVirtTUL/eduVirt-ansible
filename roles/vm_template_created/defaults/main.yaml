@@ -1,4 +1,5 @@
 vm_template_created_cluster: Default
+vm_template_created_datacenter: Default
 # vm_template_created_iso_disk_name:
 vm_template_created_kickstart_disk_name: kickstart_disk.raw
 vm_template_created_kickstart_disk_size: 2M

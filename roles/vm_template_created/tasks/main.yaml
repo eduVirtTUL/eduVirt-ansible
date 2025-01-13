@@ -19,7 +19,7 @@
     - name: Check if kickstart disk exists
       ovirt.ovirt.ovirt_disk_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "name={{ vm_template_created_kickstart_ovirt_disk_name }} and datacenter={{ vm_template_created_cluster }}"
+        pattern: "name={{ vm_template_created_kickstart_ovirt_disk_name }} and datacenter={{ vm_template_created_datacenter }}"
       register: _vm_template_created_does_kickstart_disk_exits
 
     - name: Warn
@@ -39,7 +39,7 @@
     - name: Check if template exists
       ovirt.ovirt.ovirt_template_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "name={{ vm_template_created_template_name }} and datacenter={{ vm_template_created_cluster }}"
+        pattern: "name={{ vm_template_created_template_name }} and datacenter={{ vm_template_created_datacenter }}"
       register: _vm_template_created_does_template_exists
       when: _vm_template_created_created_kickstart_disk.skipped | default(false)
 

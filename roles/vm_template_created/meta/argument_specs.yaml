@@ -16,6 +16,11 @@ argument_specs:
         default: Default
         description: Name of the cluster where the template should be created.
 
+      vm_template_created_datacenter:
+        type: str
+        default: Default
+        description: Name of the datacenter where the template should be created.
+
       vm_template_created_iso_disk_name:
         type: str
         required: true
