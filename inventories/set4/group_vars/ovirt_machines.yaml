@@ -1,0 +1,52 @@
+ansible_ssh_private_key_file: ssh_keys/ssh_key
+ansible_user: root
+
+storage_domain_name: storage_domain
+storage_network_name: storage_network
+storage_address: 10.20.47.2
+storage_path: /export/storage4
+
+vm_networks:
+  - name: vm_mgmt
+    vlan_tag: 4041
+  - name: vm_public_net
+    vlan_tag: 4042
+  - name: private_net_1
+    vlan_tag: 1
+  - name: private_net_2
+    vlan_tag: 2
+  - name: private_net_3
+    vlan_tag: 3
+  - name: private_net_4
+    vlan_tag: 4
+  - name: private_net_5
+    vlan_tag: 5
+  - name: private_net_6
+    vlan_tag: 6
+  - name: private_net_7
+    vlan_tag: 7
+  - name: private_net_8
+    vlan_tag: 8
+  - name: private_net_9
+    vlan_tag: 9
+  - name: private_net_10
+    vlan_tag: 10
+  - name: private_net_11
+    vlan_tag: 11
+  - name: private_net_12
+    vlan_tag: 12
+  - name: private_net_13
+    vlan_tag: 13
+  - name: private_net_14
+    vlan_tag: 14
+  - name: private_net_15
+    vlan_tag: 15
+  - name: private_net_16
+    vlan_tag: 16
+
+default_iso_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso
+#default_iso_location: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/41.20241027.3.0/x86_64/fedora-coreos-41.20241027.3.0-live.x86_64.iso
+# checksum is checked using sha256sum - make sure the file located under the url can be used in the program
+default_iso_checksum_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM
+#default_iso_checksum: SHA256 (fedora-cohttps://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUMreos-41.20241027.3.0-live.x86_64.iso) = fcb99dd0ab593ee5f56c9ab62d8a03b40f527e5291ac195721d3b69a6fb86e02
+default_iso_name: Fedora_Server_41

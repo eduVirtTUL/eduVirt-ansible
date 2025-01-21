@@ -1,0 +1,5 @@
+mgmt_mac: d2:0f:15:00:03:20
+storage_mac: d2:0f:15:00:03:1f
+trunk_mac: d2:0f:15:00:03:1e
+
+storage_ip: 10.20.47.45

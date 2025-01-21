@@ -14,7 +14,6 @@
         name: "{{ storage_network_name }}"
         clusters:
           - name: "{{ networking_setup_cluster }}"
-            required: false
         data_center: "{{ networking_setup_data_center }}"
         auth: "{{ ovirt_auth }}"
 
@@ -23,7 +22,6 @@
         name: "{{ item.name }}"
         clusters:
           - name: "{{ networking_setup_cluster }}"
-            required: false
         data_center: "{{ networking_setup_data_center }}"
         vlan_tag: "{{ item.vlan_tag }}"
         auth: "{{ ovirt_auth }}"
