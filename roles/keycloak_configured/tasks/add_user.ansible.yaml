@@ -16,6 +16,7 @@
           - type: "password"
             value: "{{ item.password }}"
             temporary: "{{ item.temporary }}"
+        groups: "{{ item.groups }}"
         validate_certs: "{{ keycloak_configured_validate_certs }}"
   rescue:
     - name: Login once again

@@ -66,7 +66,8 @@ argument_specs:
         type: list
         elements: str
         default:
-          - http://localhost:8080/auth/callback
+            - http://localhost:8080/auth/login/callback
+            - http://localhost:8080/auth/logout/callback
         description: List of callback URL to add to the configured client.
 
       keycloak_configured_users:
@@ -108,9 +109,14 @@ argument_specs:
             type: bool
             required: true
             description: Whether the created account is temporary.
-          
+
           groups:
             type: list
-            elements: str
+            elements: dict
             required: true
             description: List of groups that the user should be added to.
+            options:
+              name:
+                type: str
+                required: true
+                description: Group to which the user should be added to.

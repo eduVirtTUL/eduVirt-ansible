@@ -9,3 +9,4 @@ context
 *-artifact*
 .ansible-navigator
 eduvirt-client-secret.txt
+passwords.yaml

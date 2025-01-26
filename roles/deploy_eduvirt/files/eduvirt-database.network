@@ -1,0 +1,5 @@
+[Unit]
+Description=EduVirt Database Container Network
+
+[Network]
+Label=app=eduvirt

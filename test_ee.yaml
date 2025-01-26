@@ -1,33 +1,19 @@
 ---
 - name: Test
   hosts: engine
+  vars_files:
+    - vars/passwords.yaml
   roles:
-    - keycloak_configured
-# - name: Test
-#   hosts: engine
-#   tasks:
-#     - name: Authorize and add hosts
-#       block:
-#         - name: Authorize to engine
-#           ovirt.ovirt.ovirt_auth:
-#             url: https://{{ ansible_host }}/ovirt-engine/api
-#             insecure: true
-#             username: "{{ ovirt_admin_username }}"
-#             password: "{{ ovirt_admin_password }}"
-#             state: present
-
-#         - name: Get all networks in datacenter
-#           ovirt.ovirt.ovirt_network_info:
-#             auth: "{{ ovirt_auth }}"
-#             pattern: "datacenter=Default"
-#           register: result
-
-#         - name: Debug
-#           ansible.builtin.debug:
-#             var: result
-
-#       always:
-#         - name: Always revoke the SSO token
-#           ovirt.ovirt.ovirt_auth:
-#             state: absent
-#             ovirt_auth: "{{ ovirt_auth }}"
+    - deploy_eduvirt
+  vars:
+    deploy_eduvirt_keycloak_client_secret: "{{ _keycloak_configured_eduvirt_client_secret.clientsecret_info.value }}"
+    deploy_eduvirt_mail_host: stud.ics.p.lodz.pl
+    deploy_eduvirt_mail_username: vtest-mailer
+    # deploy_eduvirt_mail_password:
+    # deploy_eduvirt_eduvirt_db_password:
+    # deploy_eduvirt_liquibase_password:
+    # deploy_eduvirt_jws_secret:
+    deploy_ovirt_frontend_image_tag: 0.0.1-dev2
+    deploy_ovirt_backend_image_tag: 0.0.1-dev3
+    # deploy_ovirt_default_db_password:
+    deploy_ovirt_get_certificate: true

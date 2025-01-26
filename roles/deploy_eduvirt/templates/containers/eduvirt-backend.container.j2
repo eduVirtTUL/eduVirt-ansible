@@ -1,0 +1,15 @@
+[Unit]
+Description=EduVirt Backend Application Container
+
+[Container]
+Label=app=eduvirt
+ContainerName=eduvirt-backend
+Image=ghcr.io/eduvirttul/eduvirt-backend:{{ deploy_ovirt_backend_image_tag }}
+Network=eduvirt-backend.network
+Network=eduvirt-database.network
+EnvironmentFile=/opt/eduvirt/config/backend.env
+Volume=/opt/eduvirt/certs:/eduVirt/certs:ro,z
+Pull=newer
+
+[Install]
+WantedBy=multi-user.target default.target eduvirt-frontend.service

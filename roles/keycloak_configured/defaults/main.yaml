@@ -22,7 +22,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student2
     firstName: Freddie
@@ -32,7 +32,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student3
     firstName: Elvis
@@ -42,7 +42,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student4
     firstName: Aretha
@@ -52,7 +52,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student5
     firstName: David
@@ -62,7 +62,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student6
     firstName: Stevie
@@ -72,7 +72,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student7
     firstName: Madonna
@@ -82,7 +82,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student8
     firstName: Bob
@@ -92,7 +92,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student9
     firstName: Kurt
@@ -102,7 +102,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student10
     firstName: Joni
@@ -112,7 +112,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student11
     firstName: Michael
@@ -122,7 +122,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student12
     firstName: Janis
@@ -132,7 +132,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student13
     firstName: Johnny
@@ -142,7 +142,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student14
     firstName: Adele
@@ -152,7 +152,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student15
     firstName: Prince
@@ -162,7 +162,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student16
     firstName: Whitney
@@ -172,7 +172,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student17
     firstName: Paul
@@ -182,7 +182,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student18
     firstName: Björk
@@ -192,7 +192,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student19
     firstName: Thom
@@ -202,7 +202,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 
   - username: student20
     firstName: Beyoncé
@@ -212,7 +212,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-student
+      - name: eduvirt-student
 ############# Teachers
   - username: teacher1
     firstName: Ludwig
@@ -222,7 +222,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-teacher
+      - name: eduvirt-teacher
 
   - username: teacher2
     firstName: Johann
@@ -232,7 +232,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-teacher
+      - name: eduvirt-teacher
 
   - username: teacher3
     firstName: Wolfgang
@@ -242,7 +242,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-teacher
+      - name: eduvirt-teacher
 
   - username: teacher4
     firstName: Ella
@@ -252,8 +252,8 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-teacher
-      - eduvirt-student
+      - name: eduvirt-teacher
+      - name: eduvirt-student
 
   - username: teacher5
     firstName: Louis
@@ -263,8 +263,8 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-teacher
-      - eduvirt-administrator
+      - name: eduvirt-teacher
+      - name: eduvirt-administrator
 
   - username: teacher6
     firstName: Nina
@@ -274,9 +274,9 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-teacher
-      - eduvirt-student
-      - eduvirt-administrator
+      - name: eduvirt-teacher
+      - name: eduvirt-student
+      - name: eduvirt-administrator
 
 ############# Admins
   - username: admin1
@@ -287,7 +287,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-administrator
+      - name: eduvirt-administrator
 
   - username: admin2
     firstName: Brian
@@ -297,7 +297,7 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-administrator
+      - name: eduvirt-administrator
 
   - username: admin3
     firstName: Diana
@@ -307,4 +307,4 @@ keycloak_configured_users:
     password: test
     temporary: false
     groups:
-      - eduvirt-administrator
+      - name: eduvirt-administrator

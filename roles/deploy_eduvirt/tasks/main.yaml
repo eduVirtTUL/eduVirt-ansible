@@ -1,0 +1,146 @@
+---
+- name: Create eduVirt installation directory
+  ansible.builtin.file:
+    state: directory
+    mode: '0755'
+    path: /opt/eduvirt
+
+- name: Create certs directory
+  ansible.builtin.file:
+    state: directory
+    mode: '0755'
+    path: /opt/eduvirt/certs
+
+- name: Create config directory
+  ansible.builtin.file:
+    state: directory
+    mode: '0755'
+    path: /opt/eduvirt/config
+
+- name: Create data directory
+  ansible.builtin.file:
+    state: directory
+    mode: '0755'
+    path: /opt/eduvirt/database/data
+
+- name: Create database init directory
+  ansible.builtin.file:
+    state: directory
+    mode: '0755'
+    path: /opt/eduvirt/database/init
+
+- name: Template init.sql
+  ansible.builtin.template:
+    src: '{{ role_path }}/templates/init.sql.j2'
+    dest: "/opt/eduvirt/database/init/init.sql"
+    force: true
+    mode: '0444'
+
+- name: Template database configuration
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/environments/database.env.j2"
+    dest: "/opt/eduvirt/config/database.env"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart database"
+
+- name: Template backend configuration
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/environments/backend.env.j2"
+    dest: "/opt/eduvirt/config/backend.env"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart backend"
+
+- name: Template frontend configuration
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/environments/frontend.env.j2"
+    dest: "/opt/eduvirt/config/frontend.env"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart frontend"
+
+- name: Template database container defnition
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/containers/eduvirt-database.container.j2"
+    dest: "/etc/containers/systemd/eduvirt-database.container"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart database"
+
+- name: Template backend container defnition
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/containers/eduvirt-backend.container.j2"
+    dest: "/etc/containers/systemd/eduvirt-backend.container"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart backend"
+
+- name: Template frontend container defnition
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/containers/eduvirt-frontend.container.j2"
+    dest: "/etc/containers/systemd/eduvirt-frontend.container"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart frontend"
+
+- name: Copy backend network definition
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/eduvirt-backend.network"
+    dest: "/etc/containers/systemd/eduvirt-backend.network"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart backend network"
+
+- name: Copy database network definition
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/eduvirt-database.network"
+    dest: "/etc/containers/systemd/eduvirt-database.network"
+    force: true
+    mode: '0400'
+  notify:
+    - "daemon-reload"
+    - "restart database network"
+
+- name: Copy Apache configuration
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/eduvirt.conf"
+    dest: "/etc/httpd/conf.d/eduvirt.conf"
+    force: true
+    mode: '0400'
+  notify:
+    - "restart apache"
+
+- name: Copy podman dix
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/eduvirt-sysctl-config.conf"
+    dest: "/etc/sysctl.d/eduvirt-sysctl-config.conf"
+    force: true
+    mode: '0400'
+  notify:
+    - "sysctl update"
+
+- name: Get engine certificate
+  ansible.builtin.get_url:
+    url: "https://{{ deploy_eduvirt_host }}/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA"
+    dest: "/opt/eduvirt/certs/engine_cert.cer"
+    mode: '0400'
+    force: false
+    validate_certs: false
+  when: deploy_ovirt_get_certificate
+  notify:
+    - "daemon-reload"

@@ -1,0 +1,14 @@
+[Unit]
+Description=EduVirt Frontend Application Container
+
+[Container]
+Label=app=eduvirt
+ContainerName=eduvirt-frontend
+Image=ghcr.io/eduvirttul/eduvirt-frontend:{{ deploy_ovirt_frontend_image_tag }}
+Network=eduvirt-backend.network
+PublishPort=127.0.0.1:25565:80
+EnvironmentFile=/opt/eduvirt/config/frontend.env
+Pull=newer
+
+[Install]
+WantedBy=multi-user.target default.target

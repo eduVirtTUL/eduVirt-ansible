@@ -1,0 +1,9 @@
+---
+dependencies:
+  - role: keycloak_configured
+    vars:
+      keycloak_configured_include_test_data: false
+      keycloak_configured_eduvirt_client_id: eduVirt
+      keycloak_configured_redirect_uris:
+        - "{{ deploy_eduvirt_keycloak_redirect_login_uri }}"
+        - "{{ deploy_eduvirt_keycloak_redirect_logout_uri }}"

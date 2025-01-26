@@ -1,0 +1,53 @@
+deploy_engine_host: "{{ hostvars['engine']['ansible_host'] }}"
+deploy_eduvirt_host: "{{ hostvars['engine']['ansible_host'] }}"
+#  deploy_eduvirt_mail_host
+deploy_eduvirt_mail_port: 587
+#  deploy_eduvirt_mail_username
+#  deploy_eduvirt_mail_password
+deploy_eduvirt_mail_sender: "eduvirt-noreply@{{ deploy_eduvirt_mail_host }}"
+# deploy_eduvirt_mail_protocol
+# deploy_eduvirt_mail_properties_enable_auth
+# deploy_eduvirt_mail_properties_starttls
+# deploy_eduvirt_mail_properties_ssl_enable
+# deploy_eduvirt_mail_properties_ssl_trust
+deploy_eduvirt_issuer_uri: "https://{{ deploy_engine_host }}/ovirt-engine-auth/realms/ovirt-internal"
+deploy_backend_database_name: eduvirtdb
+deploy_eduvirt_eduvirt_db_url: jdbc:postgresql://eduvirt-database:5432/{{ deploy_backend_database_name }}
+deploy_eduvirt_eduvirt_db_username: eduvirt
+#  deploy_eduvirt_eduvirt_db_password
+# deploy_eduvirt_eduvirt_db_driver_class
+deploy_eduvirt_liquibase_user: eduvirtadmin
+#  deploy_eduvirt_liquibase_password
+deploy_eduvirt_engine_url: "https://{{ deploy_engine_host }}/ovirt-engine"
+deploy_eduvirt_engine_username: "{{ ovirt_admin_username }}"
+deploy_eduvirt_engine_password: "{{ ovirt_admin_password }}"
+# deploy_eduvirt_jks_file
+# deploy_eduvirt_jks_password
+deploy_eduvirt_keycloak_url: "https://{{ deploy_engine_host }}/ovirt-engine-auth"
+deploy_eduvirt_keycloak_realm: ovirt-internal
+deploy_eduvirt_keycloak_protocol: openid-connect
+deploy_eduvirt_keycloak_redirect_login_uri: "https://{{ deploy_eduvirt_host }}/eduVirt/api/auth/login/callback"
+deploy_eduvirt_keycloak_redirect_logout_uri: "https://{{ deploy_eduvirt_host }}/eduVirt/api/auth/logout/callback"
+deploy_eduvirt_keycloak_client_id: eduVirt
+#  deploy_eduvirt_keycloak_client_secret
+# deploy_eduvirt_default_mail_timezone
+# deploy_eduvirt_default_mail_language
+deploy_eduvirt_frontend_login: "https://{{ deploy_eduvirt_host }}/eduVirt/login"
+deploy_eduvirt_frontend_callback: "https://{{ deploy_eduvirt_host }}/eduVirt/auth/callback"
+deploy_eduvirt_maintenance_interval_min_ahead: 2
+# deploy_eduvirt_reservation_window_length:
+# deploy_eduvirt_resource_warning_mails_enabled
+#  deploy_eduvirt_jws_secret
+# deploy_eduvirt_executor_task_time_tolerance
+# deploy_eduvirt_executor_vm_shutdown_grace_time
+# deploy_eduvirt_frontend_reservations_view
+deploy_api_url: "https://{{ deploy_eduvirt_host }}/eduVirt/api"
+deploy_ovirt_engine_url: "http://{{ deploy_engine_host }}/"
+
+#  deploy_ovirt_frontend_image_tag:
+#  deploy_ovirt_backend_image_tag:
+deploy_ovirt_database_image: docker.io/postgres:16.4-alpine
+deploy_ovirt_default_db_username: postgres
+deploy_ovirt_default_db: postgres
+# deploy_ovirt_default_db_password: postgres
+deploy_ovirt_get_certificate: false

@@ -1,0 +1,229 @@
+argument_specs:
+  main:
+    short_description: Role for deploying eduVirt.
+    description:
+      - Role for deploying eduVirt.
+      - |
+        This role deploys eduVirt in containers. It expects a http traffic, so it requires some kind of ssl termination before the frontend.
+        If deployed onto engine host it attaches itself to Apache Server configured bu the ovirt.
+      - Requires variables ovirt_admin_username and ovirt_admin_password, used for authentication.
+      - |
+        If variable does not have a description, then most likely it's an environment variable for a container.
+        These variables available here see
+        https://github.com/eduVirtTUL/eduVirt-backend and
+        https://github.com/eduVirtTUL/eduVirt-frontend/tree/main/docker
+    author: Jakub Kozielski
+    options:
+      deploy_engine_host:
+        type: str
+        default: "{{ hostvars['engine']['ansible_host'] }}"
+        description: Engine host, most usefull when deploying on host different than engine itself.
+      deploy_eduvirt_host:
+        type: str
+        default: "{{ hostvars['engine']['ansible_host'] }}"
+
+      deploy_eduvirt_mail_host:
+        type: str
+        required: true
+
+      deploy_eduvirt_mail_port:
+        type: int
+        default: 587
+
+      deploy_eduvirt_mail_username:
+        type: str
+        required: true
+
+      deploy_eduvirt_mail_password:
+        type: str
+        required: true
+
+      deploy_eduvirt_mail_sender:
+        type: str
+        default: "eduvirt-noreply@{{ deploy_eduvirt_mail_host }}"
+
+      deploy_eduvirt_mail_protocol:
+        type: str
+        required: false
+
+      deploy_eduvirt_mail_properties_enable_auth:
+        type: bool
+        required: false
+
+      deploy_eduvirt_mail_properties_starttls:
+        type: bool
+        required: false
+
+      deploy_eduvirt_mail_properties_ssl_enable:
+        type: bool
+        required: false
+
+      deploy_eduvirt_mail_properties_ssl_trust:
+        type: str
+        required: false
+
+      deploy_eduvirt_issuer_uri:
+        type: str
+        default: "https://{{ deploy_engine_host }}/ovirt-engine-auth/realms/ovirt-internal"
+
+      deploy_backend_database_name:
+        type: str
+        default: eduvirtdb
+
+      deploy_eduvirt_eduvirt_db_url:
+        type: str
+        default: jdbc:postgresql://eduvirt-database:5432/{{ deploy_backend_database_name }}
+
+      deploy_eduvirt_eduvirt_db_username:
+        type: str
+        default: eduvirt
+
+      deploy_eduvirt_eduvirt_db_password:
+        type: str
+        required: true
+
+      deploy_eduvirt_eduvirt_db_driver_class:
+        type: str
+        required: false
+
+      deploy_eduvirt_liquibase_user:
+        type: str
+        default: eduvirtadmin
+
+      deploy_eduvirt_liquibase_password:
+        type: str
+        required: true
+
+      deploy_eduvirt_engine_url:
+        type: str
+        default: "https://{{ deploy_engine_host }}/ovirt-engine"
+
+      deploy_eduvirt_engine_username:
+        type: str
+        default: "{{ ovirt_admin_username }}"
+
+      deploy_eduvirt_engine_password:
+        type: str
+        default: "{{ ovirt_admin_password }}"
+
+      deploy_eduvirt_jks_file:
+        type: str
+        required: false
+
+      deploy_eduvirt_jks_password:
+        type: str
+        required: false
+
+      deploy_eduvirt_keycloak_url:
+        type: str
+        default: "https://{{ deploy_engine_host }}/ovirt-engine-auth"
+
+      deploy_eduvirt_keycloak_realm:
+        type: str
+        default: ovirt-internal
+
+      deploy_eduvirt_keycloak_protocol:
+        type: str
+        default: openid-connect
+
+      deploy_eduvirt_keycloak_redirect_login_uri:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt/api/auth/login/callback"
+
+      deploy_eduvirt_keycloak_redirect_logout_uri:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt/api/auth/logout/callback"
+
+      deploy_eduvirt_keycloak_client_id:
+        type: str
+        default: eduVirt
+
+      deploy_eduvirt_keycloak_client_secret:
+        type: str
+        required: true
+
+      deploy_eduvirt_default_mail_timezone:
+        type: str
+        required: false
+
+      deploy_eduvirt_default_mail_language:
+        type: str
+        required: false
+
+      deploy_eduvirt_frontend_login:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt/login"
+
+      deploy_eduvirt_frontend_callback:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt/auth/callback"
+
+      deploy_eduvirt_maintenance_interval_min_ahead:
+        type: int
+        default: 2
+
+      deploy_eduvirt_reservation_window_length:
+        type: int
+        required: false
+
+      deploy_eduvirt_resource_warning_mails_enabled:
+        type: bool
+        required: false
+
+      deploy_eduvirt_jws_secret:
+        type: str
+        required: true
+
+      deploy_eduvirt_executor_task_time_tolerance:
+        type: int
+        required: false
+
+      deploy_eduvirt_executor_vm_shutdown_grace_time:
+        type: int
+        required: false
+
+      deploy_eduvirt_frontend_reservations_view:
+        type: str
+        required: false
+
+      deploy_eduvirt_api_url:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt/api"
+
+      deploy_ovirt_engine_url:
+        type: str
+        default: "http://{{ deploy_engine_host }}/"
+
+      deploy_ovirt_frontend_image_tag:
+        type: str
+        required: true
+        description: Version of the frontend image.
+
+      deploy_ovirt_backend_image_tag:
+        type: str
+        required: true
+        description: Version of the backend image.
+
+      deploy_ovirt_database_image:
+        type: str
+        default: docker.io/postgres:16.4-alpine
+        description: Databse image.
+
+      deploy_ovirt_default_db_username:
+        type: str
+        default: postgres
+        description: Default container database username.
+
+      deploy_ovirt_default_db:
+        type: str
+        default: postgres
+        description: Default container database name.
+
+      deploy_ovirt_default_db_password:
+        type: str
+        required: true
+        description: Default container database password.
+
+      deploy_ovirt_get_certificate:
+        type: bool
+        default: false

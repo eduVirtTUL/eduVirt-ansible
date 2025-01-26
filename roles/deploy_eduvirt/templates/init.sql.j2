@@ -1,0 +1,7 @@
+CREATE DATABASE {{ deploy_backend_database_name }};
+
+CREATE USER {{ deploy_eduvirt_liquibase_user }} password '{{ deploy_eduvirt_liquibase_password }}';
+CREATE USER {{ deploy_eduvirt_eduvirt_db_username }} password '{{ deploy_eduvirt_eduvirt_db_password }}';
+
+GRANT ALL ON DATABASE {{ deploy_backend_database_name }} TO {{ deploy_eduvirt_liquibase_user }};
+ALTER DATABASE {{ deploy_backend_database_name }} OWNER TO {{ deploy_eduvirt_liquibase_user }};

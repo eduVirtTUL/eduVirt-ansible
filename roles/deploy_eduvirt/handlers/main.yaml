@@ -1,0 +1,55 @@
+---
+- name: Update sysctl
+  ansible.builtin.command:
+    cmd: sysctl -p
+    removes: /etc/sysctl.d/eduvirt-sysctl-config.conf
+  listen: "sysctl update"
+
+- name: Reload daemon
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  listen: "daemon-reload"
+
+- name: Restart database network
+  ansible.builtin.service:
+    name: eduvirt-database-network
+    state: restarted
+  listen: "restart database network"
+  notify:
+    - "restart backend"
+    - "restart database"
+
+- name: Restart backend
+  ansible.builtin.service:
+    name: eduvirt-backend-network
+    state: restarted
+  listen: "restart backend network"
+  notify:
+    - "restart backend"
+    - "restart frontend"
+
+- name: Restart database
+  ansible.builtin.service:
+    name: eduvirt-database
+    state: restarted
+  listen: "restart database"
+  notify: "restart backend"
+
+- name: Restart backend
+  ansible.builtin.service:
+    name: eduvirt-backend
+    state: restarted
+  listen: "restart backend"
+  notify: "restart frontend"
+
+- name: Restart frontend
+  ansible.builtin.service:
+    name: eduvirt-frontend
+    state: restarted
+  listen: "restart frontend"
+
+- name: Restart Apache
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+  listen: "restart apache"

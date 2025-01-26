@@ -1,0 +1,16 @@
+[Unit]
+Description=EduVirt Database Container
+
+[Container]
+Label=app=eduvirt
+ContainerName=eduvirt-database
+Image={{ deploy_ovirt_database_image }}
+Network=eduvirt-database.network
+Volume=/opt/eduvirt/database/data:/var/lib/postgresql/data:Z
+Volume=/opt/eduvirt/database/init/.:/docker-entrypoint-initdb.d/:Z,ro
+EnvironmentFile=/opt/eduvirt/config/database.env
+Pull=newer
+
+[Install]
+WantedBy=multi-user.target default.target 
+RequiredBy=eduvirt-backend.service
