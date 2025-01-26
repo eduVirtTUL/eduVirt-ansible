@@ -2,4 +2,4 @@ mgmt_mac: d2:0f:15:00:02:1e
 storage_mac: d2:0f:15:00:02:1d
 trunk_mac:  d2:0f:15:00:02:1c
 
-storage_ip: 10.20.47.26
+storage_ip: 10.20.47.46

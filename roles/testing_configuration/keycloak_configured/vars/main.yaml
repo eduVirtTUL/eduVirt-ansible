@@ -1,0 +1,4 @@
+_keycloak_configured_eduvirt_groups:
+  - eduvirt-administrator
+  - eduvirt-teacher
+  - eduvirt-student

@@ -1,57 +1,48 @@
 ---
+- name: Login into Keycloak
+  ansible.builtin.include_tasks: login.ansible.yaml
+
 - name: Create eduVirt client
   community.general.keycloak_client:
-    auth_client_id: "{{ keycloak_configured_client_id }}"
-    auth_client_secret: "{{ keycloak_configured_client_secret }}"
     auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
-    auth_realm: "{{ keycloak_configured_keycloak_realm }}"
-    auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
-    auth_password: "{{ keycloak_configured_keycloak_keycloak_admin_password }}"
+    token: "{{ _keycloak_configured_token }}"
     state: present
     redirect_uris: "{{ keycloak_configured_redirect_uris }}"
     realm: "{{ keycloak_configured_realm }}"
-    validate_certs: "{{ keycloak_configured_validate_certs }}"
     client_id: "{{ keycloak_configured_eduvirt_client_id }}"
     public_client: false
+    validate_certs: "{{ keycloak_configured_validate_certs }}"
+    protocol_mappers:
+      - config:
+          access.token.claim: true
+          claim.name: groups
+          full.path: true
+          id.token.claim: true
+          userinfo.token.claim: true
+        consentRequired: false
+        name: groups
+        protocol: openid-connect
+        protocolMapper: oidc-group-membership-mapper
 
 - name: Retrieve client secret
   community.general.keycloak_clientsecret_info:
-    auth_client_id: "{{ keycloak_configured_client_id }}"
-    auth_client_secret: "{{ keycloak_configured_client_secret }}"
     auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
-    auth_realm: "{{ keycloak_configured_keycloak_realm }}"
-    auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
-    auth_password: "{{ keycloak_configured_keycloak_keycloak_admin_password }}"
+    token: "{{ _keycloak_configured_token }}"
     realm: "{{ keycloak_configured_realm }}"
     validate_certs: "{{ keycloak_configured_validate_certs }}"
     client_id: "{{ keycloak_configured_eduvirt_client_id }}"
   register: _keycloak_configured_eduvirt_client_secret
 
-- name: Save secret locally
-  ansible.builtin.copy:
-    content: "{{ _keycloak_configured_eduvirt_client_secret.clientsecret_info.value }}"
-    dest: eduvirt-client-secret.txt
-    mode: '0440'
-  delegate_to: localhost
+- name: Create groups for eduVirt
+  community.general.keycloak_group:
+    auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
+    token: "{{ _keycloak_configured_token }}"
+    realm: "{{ keycloak_configured_realm }}"
+    validate_certs: "{{ keycloak_configured_validate_certs }}"
+    name: "{{ item }}"
+  with_items: "{{ _keycloak_configured_eduvirt_groups }}"
 
 - name: Add Keycloak Users
-  community.general.keycloak_user:
-    auth_client_id: "{{ keycloak_configured_client_id }}"
-    auth_client_secret: "{{ keycloak_configured_client_secret }}"
-    auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
-    auth_realm: "{{ keycloak_configured_keycloak_realm }}"
-    auth_username: "{{ keycloak_configured_keycloak_admin_user }}"
-    auth_password: "{{ keycloak_configured_keycloak_keycloak_admin_password }}"
-    state: present
-    realm: "{{ keycloak_configured_realm }}"
-    username: "{{ item.username }}"
-    firstName: "{{ item.firstName }}"
-    lastName: "{{ item.lastName }}"
-    email: "{{ item.email }}"
-    enabled: "{{ item.enabled }}"
-    credentials:
-      - type: "password"
-        value: "{{ item.password }}"
-        temporary: "{{ item.temporary }}"
-    validate_certs: "{{ keycloak_configured_validate_certs }}"
   loop: "{{ keycloak_configured_users }}"
+  ansible.builtin.include_tasks: add_user.ansible.yaml
+  when: keycloak_configured_include_test_data

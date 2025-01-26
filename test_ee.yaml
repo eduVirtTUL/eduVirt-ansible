@@ -1,29 +1,33 @@
 ---
 - name: Test
   hosts: engine
-  tasks:
-    - name: Authorize and add hosts
-      block:
-        - name: Authorize to engine
-          ovirt.ovirt.ovirt_auth:
-            url: https://{{ ansible_host }}/ovirt-engine/api
-            insecure: true
-            username: "{{ ovirt_admin_username }}"
-            password: "{{ ovirt_admin_password }}"
-            state: present
+  roles:
+    - keycloak_configured
+# - name: Test
+#   hosts: engine
+#   tasks:
+#     - name: Authorize and add hosts
+#       block:
+#         - name: Authorize to engine
+#           ovirt.ovirt.ovirt_auth:
+#             url: https://{{ ansible_host }}/ovirt-engine/api
+#             insecure: true
+#             username: "{{ ovirt_admin_username }}"
+#             password: "{{ ovirt_admin_password }}"
+#             state: present
 
-        - name: Get all networks in datacenter
-          ovirt.ovirt.ovirt_network_info:
-            auth: "{{ ovirt_auth }}"
-            pattern: "datacenter=Default"
-          register: result
+#         - name: Get all networks in datacenter
+#           ovirt.ovirt.ovirt_network_info:
+#             auth: "{{ ovirt_auth }}"
+#             pattern: "datacenter=Default"
+#           register: result
 
-        - name: Debug
-          ansible.builtin.debug:
-            var: result
+#         - name: Debug
+#           ansible.builtin.debug:
+#             var: result
 
-      always:
-        - name: Always revoke the SSO token
-          ovirt.ovirt.ovirt_auth:
-            state: absent
-            ovirt_auth: "{{ ovirt_auth }}"
+#       always:
+#         - name: Always revoke the SSO token
+#           ovirt.ovirt.ovirt_auth:
+#             state: absent
+#             ovirt_auth: "{{ ovirt_auth }}"

@@ -1,53 +1,310 @@
 keycloak_configured_client_id: admin-cli
 keycloak_configured_client_secret: ""
 keycloak_configured_eduvirt_client_id: eduVirtDev
-keycloak_configured_keycloak_admin_user: "admin"
-keycloak_configured_keycloak_keycloak_admin_password: "{{ ovirt_admin_password }}"
+keycloak_configured_keycloak_admin_user: admin
+keycloak_configured_keycloak_admin_password: "{{ ovirt_admin_password }}"
 keycloak_configured_keycloak_realm: "master"
 keycloak_configured_keycloak_url: "https://{{ ansible_host }}/ovirt-engine-auth"
 keycloak_configured_realm: "ovirt-internal"
 keycloak_configured_validate_certs: false
+keycloak_configured_include_test_data: false
 
 keycloak_configured_redirect_uris:
-  - http://localhost:8080/auth/callback
+  - http://localhost:8080/auth/login/callback
+  - http://localhost:8080/auth/logout/callback
 
 keycloak_configured_users:
   - username: student1
-    firstName: Tomasz
-    lastName: Działowy
+    firstName: Artur
+    lastName: Andrus
     email: student1@test.com
     enabled: true
     password: test
     temporary: false
+    groups:
+      - eduvirt-student
 
   - username: student2
-    firstName: Filip
-    lastName: Przysiadowski
+    firstName: Freddie
+    lastName: Mercury
     email: student2@test.com
     enabled: true
     password: test
     temporary: false
+    groups:
+      - eduvirt-student
 
   - username: student3
-    firstName: Bomasz
-    lastName: Tojdys
+    firstName: Elvis
+    lastName: Presley
     email: student3@test.com
     enabled: true
     password: test
     temporary: false
+    groups:
+      - eduvirt-student
 
+  - username: student4
+    firstName: Aretha
+    lastName: Franklin
+    email: student4@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student5
+    firstName: David
+    lastName: Bowie
+    email: student5@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student6
+    firstName: Stevie
+    lastName: Wonder
+    email: student6@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student7
+    firstName: Madonna
+    lastName: Ciccone
+    email: student7@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student8
+    firstName: Bob
+    lastName: Dylan
+    email: student8@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student9
+    firstName: Kurt
+    lastName: Cobain
+    email: student9@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student10
+    firstName: Joni
+    lastName: Mitchell
+    email: student10@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student11
+    firstName: Michael
+    lastName: Jackson
+    email: student11@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student12
+    firstName: Janis
+    lastName: Joplin
+    email: student12@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student13
+    firstName: Johnny
+    lastName: Cash
+    email: student13@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student14
+    firstName: Adele
+    lastName: Adkins
+    email: student14@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student15
+    firstName: Prince
+    lastName: Rogers
+    email: student15@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student16
+    firstName: Whitney
+    lastName: Houston
+    email: student16@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student17
+    firstName: Paul
+    lastName: McCartney
+    email: student17@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student18
+    firstName: Björk
+    lastName: Guðmundsdóttir
+    email: student18@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student19
+    firstName: Thom
+    lastName: Yorke
+    email: student19@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+
+  - username: student20
+    firstName: Beyoncé
+    lastName: Knowles
+    email: student20@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-student
+############# Teachers
   - username: teacher1
-    firstName: Artur
-    lastName: Andrus
+    firstName: Ludwig
+    lastName: Beethoven
     email: teacher1@test.com
     enabled: true
     password: test
     temporary: false
+    groups:
+      - eduvirt-teacher
 
   - username: teacher2
-    firstName: Kurt
-    lastName: Cobain
+    firstName: Johann
+    lastName: Bach
     email: teacher2@test.com
     enabled: true
     password: test
     temporary: false
+    groups:
+      - eduvirt-teacher
+
+  - username: teacher3
+    firstName: Wolfgang
+    lastName: Mozart
+    email: teacher3@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-teacher
+
+  - username: teacher4
+    firstName: Ella
+    lastName: Fitzgerald
+    email: teacher4@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-teacher
+      - eduvirt-student
+
+  - username: teacher5
+    firstName: Louis
+    lastName: Armstrong
+    email: teacher5@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-teacher
+      - eduvirt-administrator
+
+  - username: teacher6
+    firstName: Nina
+    lastName: Simone
+    email: teacher6@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-teacher
+      - eduvirt-student
+      - eduvirt-administrator
+
+############# Admins
+  - username: admin1
+    firstName: Quincy
+    lastName: Jones
+    email: admin1@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-administrator
+
+  - username: admin2
+    firstName: Brian
+    lastName: Eno
+    email: admin2@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-administrator
+
+  - username: admin3
+    firstName: Diana
+    lastName: Ross
+    email: admin3@test.com
+    enabled: true
+    password: test
+    temporary: false
+    groups:
+      - eduvirt-administrator

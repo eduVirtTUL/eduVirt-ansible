@@ -8,15 +8,20 @@ argument_specs:
         Creates a set of users for testing purposes.
     author: Jakub Kozielski
     options:
+      keycloak_configured_include_test_data:
+        type: bool
+        default: false
+        description: Whether to add test users into keycloak.
+
       keycloak_configured_client_id:
         type: str
         default: admin-cli
-        description: Client used to connect to the keycloak
+        description: Client used to connect to the keycloak.
 
       keycloak_configured_client_secret:
         type: str
         default: ""
-        description: Client secret used to connect to the keycloak
+        description: Client secret used to connect to the keycloak.
 
       keycloak_configured_eduvirt_client_id:
         type: str
@@ -26,14 +31,14 @@ argument_specs:
       keycloak_configured_keycloak_admin_user:
         type: str
         default: admin
-        description: Username used to connect to the keycloak
+        description: Username used to connect to the keycloak.
 
-      keycloak_configured_keycloak_keycloak_admin_password:
+      keycloak_configured_keycloak_admin_password:
         type: str
         default: "[ovirt_admin_password]"
         description:
-          - Password used to connect to the keycloak
-          - Defaults to the hosts [ovirt_admin_password] variable
+          - Password used to connect to the keycloak.
+          - Defaults to the hosts [ovirt_admin_password] variable.
 
       keycloak_configured_keycloak_realm:
         type: str
@@ -50,12 +55,12 @@ argument_specs:
       keycloak_configured_realm:
         type: str
         default: ovirt-internal
-        description: Name of the realm where the changes will be made
+        description: Name of the realm where the changes will be made.
 
       keycloak_configured_validate_certs:
         type: bool
         default: false
-        description: Whether to validate certs when connecting to keycloak
+        description: Whether to validate certs when connecting to keycloak.
 
       keycloak_configured_redirect_uris:
         type: list
@@ -72,7 +77,7 @@ argument_specs:
           username:
             type: str
             required: true
-            description: Username of the account
+            description: Username of the account.
 
           firstName:
             type: str
@@ -103,3 +108,9 @@ argument_specs:
             type: bool
             required: true
             description: Whether the created account is temporary.
+          
+          groups:
+            type: list
+            elements: str
+            required: true
+            description: List of groups that the user should be added to.

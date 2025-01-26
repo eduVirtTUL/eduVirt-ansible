@@ -1,0 +1,39 @@
+---
+- name: Add Keycloak User
+  block:
+    - name: Add Keycloak User
+      community.general.keycloak_user:
+        auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
+        token: "{{ _keycloak_configured_token }}"
+        state: present
+        realm: "{{ keycloak_configured_realm }}"
+        username: "{{ item.username }}"
+        firstName: "{{ item.firstName }}"
+        lastName: "{{ item.lastName }}"
+        email: "{{ item.email }}"
+        enabled: "{{ item.enabled }}"
+        credentials:
+          - type: "password"
+            value: "{{ item.password }}"
+            temporary: "{{ item.temporary }}"
+        validate_certs: "{{ keycloak_configured_validate_certs }}"
+  rescue:
+    - name: Login once again
+      ansible.builtin.include_tasks: login.ansible.yaml
+
+    - name: Try to add user once again
+      community.general.keycloak_user:
+        auth_keycloak_url: "{{ keycloak_configured_keycloak_url }}"
+        token: "{{ _keycloak_configured_token }}"
+        state: present
+        realm: "{{ keycloak_configured_realm }}"
+        username: "{{ item.username }}"
+        firstName: "{{ item.firstName }}"
+        lastName: "{{ item.lastName }}"
+        email: "{{ item.email }}"
+        enabled: "{{ item.enabled }}"
+        credentials:
+          - type: "password"
+            value: "{{ item.password }}"
+            temporary: "{{ item.temporary }}"
+        validate_certs: "{{ keycloak_configured_validate_certs }}"
