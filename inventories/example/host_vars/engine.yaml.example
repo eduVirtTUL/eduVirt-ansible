@@ -1,0 +1,16 @@
+# Example engine.yaml file
+# This file is crucial to the playbook as it contains administrator's username and password. 
+
+# Username of the administrator used to authenticate to the REST api.
+# Note that this username may differ from the username used to login when using GUI. 
+ovirt_admin_username: admin@ovirt@internalsso
+
+# Password to the admin account
+# This passsword is used when setting up the engine.
+ovirt_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38316632613539633766323365316635636665656131343964643566356562613034366635363231
+          6434616132383136343566376332646533386439346338360a303965393464386363353762623863
+          62333332303063306632396334613261323639613234303131616466313139646139663537386530
+          6239376238393863390a633164363138646433343738343036633034623366623939656634626335
+          6563

@@ -1,0 +1,43 @@
+# Example host file
+
+# Group aggregating all hosts
+ovirt_machines:
+  children:
+    ovirt_engine:
+    ovirt_nodes:
+
+# Group aggregating all nodes
+# You should add any additional clusters here.
+ovirt_nodes:
+  children:
+    cluster_1:
+    # cluster_2:
+
+# Engine host
+ovirt_engine:
+  hosts:
+    engine:
+      ansible_host: engine.example.com
+
+
+# Example of a cluster
+# Sometimes ovirt engine has problems when adding hosts by FQDN. In those cases you can use IP Addresses.
+# https://lists.ovirt.org/archives/list/users@ovirt.org/thread/FSGWGSNKABHU45DNJQPBY4HIHR6QUFSU/
+
+cluster_1:
+  hosts:
+    node1:
+      ansible_host: node1.example.com # 10.0.0.11
+    node2:
+      ansible_host: node2.example.com # 10.0.0.12
+    node3:
+      ansible_host: node3.example.com # 10.0.0.13
+
+# cluster_2:
+#   hosts:
+#     node4:
+#       ansible_host: node4.example.com # 10.0.0.14
+#     node5:
+#       ansible_host: node5.example.com # 10.0.0.15
+#     node6:
+#       ansible_host: node6.example.com # 10.0.0.16

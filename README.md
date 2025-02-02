@@ -1,5 +1,28 @@
 # EduVirt environment
 
+## Before running
+
+### Inventory
+
+Create your inventory that will be used to install the ovirt on.
+Example inventory is provided in the `inventories/example` directory. 
+
+### SSH keys
+
+Ansible connects to the managed hosts using ssh. Because of that you need to provide it with ssh keys used to establishing the connections.
+
+Create a `ssh_keys` directory in the root of the project. There, add all keys you need to connecting to the hosts. 
+
+In the example inventory all hosts will try to use the key specified in `ovirt_machines.yaml` file. If hosts use different keys, specify them by overriding the `ansible_ssh_private_key_file` variable in a respective node file.
+
+### Secret management
+
+Ansible provides a mechanism called *ansible-vault* that allows to encrypt sensitive information and use it easily in the playbooks. It uses AES256 to encrypt the files or variables, which potentially allows to share them publicly. 
+
+If you decide to use it create a file and change the `vault_password_file` to that file. Now you can use the *ansible-vault* without providing passwords on all playbook invocations.
+
+For more advanced usage see https://docs.ansible.com/ansible/latest/vault_guide/index.html.
+
 ## Running the playbooks
 
 ### Execution environment
@@ -22,10 +45,8 @@ python3 -m pip install ansible-navigator
 Execution environment can be used to lauch playbooks using ansible-navigator. For example: 
 
 ```
-ansible-navigator run test_ee.yaml -i inventories/set2/hosts.yaml --mode stdout
+ansible-navigator run test_ee.yaml -i inventories/set2/hosts.yaml
 ```
-
- Selected mode makes the output format the same as running a `ansible-playbook` instead of an interactive one.
 
 ### Alternative 
 

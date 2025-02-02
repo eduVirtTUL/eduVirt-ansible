@@ -1,0 +1,14 @@
+# Example node vars file
+
+# For more info about these variables see networking_setup role.
+# MAC address of the Network interface that will be coneccted to the management network.
+mgmt_mac: d2:0f:15:00:03:0b
+
+# MAC address of the Network interface that will be coneccted to the storage network.
+storage_mac: d2:0f:15:00:02:0c
+
+# MAC address of the Network interface that will be used to create virtual networks.
+trunk_mac: d2:0f:15:00:01:05
+
+# Address that will be assigned to the node on the storage NIC.
+storage_ip: 10.20.47.21

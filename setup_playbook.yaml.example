@@ -1,0 +1,158 @@
+---
+# Example playbook file for installing ovirt and deploying eduVirt.
+# For more options see argument_soecs.yaml of respective roles.
+
+# ======= Basic Ovirt installation =======
+
+# Necessary step ran on engine and host nodes.
+# Enables ovirt repositores, allowing the packages to be installed.
+# Fixes some dependencies versions.
+- name: Enable ovirt repositories
+  hosts: ovirt_machines
+  gather_facts: false
+  roles:
+    - ovirt_repository_installed
+
+# Installs ovirt engine on specified host.
+- name: Install engine
+  hosts: engine
+  roles:
+    - engine_running
+
+# Prepares hosts before adding them as nodes to the engine.
+- name: Prepare hosts
+  gather_facts: false
+  hosts: ovirt_nodes
+  roles:
+    - hosts_prepared
+
+# Creates a cluster in the ovirt.
+# Each cluster need to be created by a seperate play.
+- name: Setup cluster
+  hosts: engine
+  vars:
+    setup_cluster_cpu_type: AMD EPYC
+    setup_cluster_cluster_name: cluster_1
+  roles:
+    - setup_cluster
+
+# - name: Setup first cluster
+#   hosts: engine
+#   vars:
+#     setup_cluster_cpu_type: Secure AMD EPYC
+#     setup_cluster_cluster_name: cluster_2
+#   roles:
+#     - setup_cluster
+
+# Adds hosts to the specified cluster.
+# Nodes to another cluster need to be added by a seperate play.
+- name: Add nodes to first cluster
+  hosts: engine
+  vars:
+    hosts_added_hosts: "{{ groups['cluster_1'] }}"
+    hosts_added_cluster: cluster_1
+  roles:
+    - hosts_added
+
+# - name: Add nodes to second cluster
+#   hosts: engine
+#   vars:
+#     hosts_added_hosts: "{{ groups['cluster_2'] }}"
+#     hosts_added_cluster: cluster_2
+#   roles:
+#     - hosts_added
+
+# Creates networking configuration for the specified cluster.
+# This step may fail when adding new nodes to the already setup engine.
+# There is no option to reasonably add networking onto a working engine.
+# In that case, manually add required networking and re-run the playbook if plays after this one are needed.
+- name: First cluster networking setup
+  hosts: engine
+  vars:
+    networking_setup_hosts: "{{ groups['cluster_1'] }}"
+    networking_setup_cluster: cluster_1
+  roles:
+    - networking_setup
+
+# - name: Second cluster networking setup
+#   hosts: engine
+#   vars:
+#     networking_setup_hosts: "{{ groups['cluster_2'] }}"
+#     networking_setup_cluster: cluster_2
+#   roles:
+#     - networking_setup
+
+# Attaches storage to the ovirt engine
+- name: Setup storage
+  hosts: engine
+  roles:
+    - setup_storage
+    
+
+# ====== Testing data configuration  ======
+
+# Downloads specified iso and uploads it to the engine. 
+- name: Upload default iso
+  hosts: engine
+  vars:
+    upload_default_iso_checksum_location: "{{ default_iso_checksum_location }}"
+    upload_default_iso_name: "{{ default_iso_name }}"
+    upload_default_iso_location: "{{ default_iso_location }}"
+  roles:
+    - upload_default_iso
+
+# Creates and uploads a kickstart disk used for an unattended OS installation.
+# Then, uses this disk to create a vm template.
+- name: Create vm template
+  hosts: engine
+  vars:
+    vm_template_created_iso_disk_name: "{{ default_iso_name }}"
+    vm_template_created_template_nic_network: "{{ vm_networks[0].name }}"
+    vm_template_created_cluster: cluster_1
+    vm_template_created_template_creation_timeout: 45
+  roles:
+    - vm_template_created
+
+# Creates and confgigures resources neccessary for eduVirt application.
+# Additionally creates example users for testing.
+- name: Setup keycloak
+  hosts: engine
+  vars:
+    vm_template_created_template_creation_timeout: 45
+    keycloak_configured_include_test_data: true
+    keycloak_configured_eduvirt_client_id: eduVirt
+  roles:
+    - keycloak_configured
+
+# Creates a set of testing vm's on specified cluster.
+- name: Create test data in first cluster
+  hosts: engine
+  vars:
+    vm_test_data_cluster: cluster_1
+  roles:
+    - vm_test_data
+
+# - name: Create test data in second cluster
+#   hosts: engine
+#   vars:
+#     vm_test_data_cluster: cluster_2
+#   roles:
+#     - vm_test_data
+
+# ============ Deploy eduVirt ============
+
+# Deploys eduVirt on the engine host.
+- name: Deploy eduVirt
+  hosts: engine
+  vars_files:
+    - vars/passwords.yaml # File containing encrypted (or not) sensitive data for deployment. See README for more information.
+  roles:
+    - deploy_eduvirt
+  vars:
+    # If deployment and ovirt setup are ran the in the same playbook, it's a good way to get the client secret.
+    deploy_eduvirt_keycloak_client_secret: "{{ _keycloak_configured_eduvirt_client_secret.clientsecret_info.value }}"
+    deploy_eduvirt_mail_host: stud.ics.p.lodz.pl
+    deploy_eduvirt_mail_username: vtest-mailer
+    deploy_ovirt_frontend_image_tag: 0.0.1-dev4
+    deploy_ovirt_backend_image_tag: 0.0.1-dev6
+    deploy_ovirt_get_certificate: true

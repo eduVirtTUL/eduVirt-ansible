@@ -1,0 +1,48 @@
+# Example ovirt_machines group vars
+
+# Special ansible variable, specifies the ssh key used to connect to the host.
+# If needed can be set at host level. 
+ansible_ssh_private_key_file: ssh_keys/ssh_key
+
+# Special ansible variable, specifies the user to connect as.
+# If needed can be set at host level. 
+ansible_user: root
+
+# Name of the storage domain in the engine.
+# Used for some defaults in roles.
+storage_domain_name: storage_domain
+
+# Name of the storage network name in the engine.
+# Used for some defaults in roles.
+storage_network_name: storage_network
+
+# Address of the storage host.
+# Used for some defaults in roles.
+storage_address: 10.20.47.2
+
+# Path to the exported by the storage host NFS Storage. 
+storage_path: /export/storage2
+
+# Set of testing data networks
+vm_networks:
+  - name: vm_mgmt
+    vlan_tag: 4041
+  - name: vm_public_net
+    vlan_tag: 4042
+  - name: private_net_1
+    vlan_tag: 1
+  - name: private_net_2
+    vlan_tag: 2
+  - name: private_net_3
+    vlan_tag: 3
+  - name: private_net_4
+    vlan_tag: 4
+
+
+# Variables related to default iso configuration. See upload_default_iso role for more info.
+
+default_iso_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-dvd-x86_64-41-1.4.iso
+# checksum is checked using sha256sum - make sure the file located under the url can be used in the program
+default_iso_checksum_location: https://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUM
+#default_iso_checksum: SHA256 (fedora-cohttps://download.fedoraproject.org/pub/fedora/linux/releases/41/Server/x86_64/iso/Fedora-Server-41-1.4-x86_64-CHECKSUMreos-41.20241027.3.0-live.x86_64.iso) = fcb99dd0ab593ee5f56c9ab62d8a03b40f527e5291ac195721d3b69a6fb86e02
+default_iso_name: Fedora_Server_41
