@@ -13,7 +13,7 @@
     # deploy_eduvirt_eduvirt_db_password:
     # deploy_eduvirt_liquibase_password:
     # deploy_eduvirt_jws_secret:
-    deploy_ovirt_frontend_image_tag: 0.0.1-dev2
-    deploy_ovirt_backend_image_tag: 0.0.1-dev3
+    deploy_ovirt_frontend_image_tag: 0.0.1-dev4
+    deploy_ovirt_backend_image_tag: 0.0.1-dev6
     # deploy_ovirt_default_db_password:
     deploy_ovirt_get_certificate: true

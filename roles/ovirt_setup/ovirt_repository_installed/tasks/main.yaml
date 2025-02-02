@@ -11,3 +11,104 @@
     name: libnl3-3.7.0-1.el9
     allow_downgrade: true
     state: present
+
+# While testing deployment on qemu version 17:9.1.0-9.el9, libvirt 10.10.0-4.el9 and hosts setup from ovirt 4.5.6-1.el9
+# virtual machines started could not be started with chipset Q35 UEFI.
+# In order to start them the chipset needed to be changed to Q35 BIOS.
+# qemu downgrade solves this issue.
+
+- name: Downgrade qemu-img
+  ansible.builtin.dnf:
+    name: qemu-img-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm
+  ansible.builtin.dnf:
+    name: qemu-kvm-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-audio-pa
+  ansible.builtin.dnf:
+    name: qemu-kvm-audio-pa-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-block-blkio
+  ansible.builtin.dnf:
+    name: qemu-kvm-block-blkio-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-block-rbd
+  ansible.builtin.dnf:
+    name: qemu-kvm-block-rbd-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-core
+  ansible.builtin.dnf:
+    name: qemu-kvm-core-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-device-display-virtio-gpu
+  ansible.builtin.dnf:
+    name: qemu-kvm-device-display-virtio-gpu-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-device-display-virtio-gpu-pci
+  ansible.builtin.dnf:
+    name: qemu-kvm-device-display-virtio-gpu-pci-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-device-display-virtio-vga
+  ansible.builtin.dnf:
+    name: qemu-kvm-device-display-virtio-vga-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-device-usb-host
+  ansible.builtin.dnf:
+    name: qemu-kvm-device-usb-host-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-device-usb-redirect
+  ansible.builtin.dnf:
+    name: qemu-kvm-device-usb-redirect-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-docs
+  ansible.builtin.dnf:
+    name: qemu-kvm-docs-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-tools
+  ansible.builtin.dnf:
+    name: qemu-kvm-tools-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-ui-egl-headless
+  ansible.builtin.dnf:
+    name: qemu-kvm-ui-egl-headless-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-kvm-ui-opengl
+  ansible.builtin.dnf:
+    name: qemu-kvm-ui-opengl-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present
+
+- name: Downgrade qemu-pr-helper
+  ansible.builtin.dnf:
+    name: qemu-pr-helper-17:9.1.0-7.el9
+    allow_downgrade: true
+    state: present

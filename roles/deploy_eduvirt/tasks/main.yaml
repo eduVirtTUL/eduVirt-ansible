@@ -125,10 +125,10 @@
   notify:
     - "restart apache"
 
-- name: Copy podman dix
+- name: Copy podman fix
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/eduvirt-sysctl-config.conf"
-    dest: "/etc/sysctl.d/eduvirt-sysctl-config.conf"
+    src: "{{ role_path }}/files/eduvirt-config.conf"
+    dest: "/etc/sysctl.d/eduvirt-config.conf"
     force: true
     mode: '0400'
   notify:

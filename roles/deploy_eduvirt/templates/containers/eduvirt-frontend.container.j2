@@ -1,5 +1,10 @@
 [Unit]
 Description=EduVirt Frontend Application Container
+StartLimitIntervalSec=10m
+StartLimitBurst=10
+
+[Service]
+Restart=on-failure
 
 [Container]
 Label=app=eduvirt
@@ -8,7 +13,13 @@ Image=ghcr.io/eduvirttul/eduvirt-frontend:{{ deploy_ovirt_frontend_image_tag }}
 Network=eduvirt-backend.network
 PublishPort=127.0.0.1:25565:80
 EnvironmentFile=/opt/eduvirt/config/frontend.env
-Pull=newer
+Pull=missing
+
+HealthOnFailure=kill
+HealthCmd=wget -q --spider http://127.0.0.1/eduVirt/api/actuator/health
+HealthInterval=1m
+HealthRetries=3
+HealthTimeout=20s
 
 [Install]
 WantedBy=multi-user.target default.target

@@ -28,7 +28,7 @@ argument_specs:
 
       deploy_eduvirt_mail_port:
         type: int
-        default: 587
+        default: 465
 
       deploy_eduvirt_mail_username:
         type: str
@@ -227,3 +227,11 @@ argument_specs:
       deploy_ovirt_get_certificate:
         type: bool
         default: false
+
+      deploy_ovirt_frontend_base_path:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt"
+
+      deploy_ovirt_frontend_reservations_view:
+        type: str
+        default: "https://{{ deploy_eduvirt_host }}/eduVirt/reservations"

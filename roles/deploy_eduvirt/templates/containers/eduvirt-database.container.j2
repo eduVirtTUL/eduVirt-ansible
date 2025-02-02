@@ -9,7 +9,19 @@ Network=eduvirt-database.network
 Volume=/opt/eduvirt/database/data:/var/lib/postgresql/data:Z
 Volume=/opt/eduvirt/database/init/.:/docker-entrypoint-initdb.d/:Z,ro
 EnvironmentFile=/opt/eduvirt/config/database.env
-Pull=newer
+Pull=missing
+Notify=healthy
+
+HealthOnFailure=kill
+HealthCmd=pg_isready -d {{ deploy_backend_database_name }} -U {{ deploy_eduvirt_eduvirt_db_username }}
+HealthInterval=1m
+HealthRetries=3
+HealthTimeout=20s
+
+HealthStartupCmd=pg_isready -d {{ deploy_backend_database_name }} -U {{ deploy_eduvirt_eduvirt_db_username }}
+HealthStartupInterval=10s
+HealthStartupSuccess=2
+HealthStartupTimeout=3m
 
 [Install]
 WantedBy=multi-user.target default.target 

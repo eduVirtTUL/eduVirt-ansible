@@ -66,8 +66,8 @@ argument_specs:
         type: list
         elements: str
         default:
-            - http://localhost:8080/auth/login/callback
-            - http://localhost:8080/auth/logout/callback
+          - http://localhost:8080/auth/login/callback
+          - http://localhost:8080/auth/logout/callback
         description: List of callback URL to add to the configured client.
 
       keycloak_configured_users:

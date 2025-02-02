@@ -1,5 +1,10 @@
 [Unit]
 Description=EduVirt Backend Application Container
+StartLimitIntervalSec=10m
+StartLimitBurst=10
+
+[Service]
+Restart=on-failure
 
 [Container]
 Label=app=eduvirt
@@ -9,7 +14,19 @@ Network=eduvirt-backend.network
 Network=eduvirt-database.network
 EnvironmentFile=/opt/eduvirt/config/backend.env
 Volume=/opt/eduvirt/certs:/eduVirt/certs:ro,z
-Pull=newer
+Pull=missing
+Notify=healthy
+
+HealthOnFailure=kill
+HealthCmd=wget -q --spider http://127.0.0.1:8080/actuator/health
+HealthInterval=1m
+HealthRetries=3
+HealthTimeout=20s
+
+HealthStartupCmd=wget -q --spider http://127.0.0.1:8080/actuator/health
+HealthStartupInterval=10s
+HealthStartupSuccess=2
+HealthStartupTimeout=3m
 
 [Install]
 WantedBy=multi-user.target default.target eduvirt-frontend.service

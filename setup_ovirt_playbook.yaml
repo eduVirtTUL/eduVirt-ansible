@@ -74,6 +74,9 @@
     vm_template_created_iso_disk_name: "{{ default_iso_name }}"
     vm_template_created_template_nic_network: "{{ vm_networks[0].name }}"
     vm_template_created_cluster: cluster_1
+    keycloak_configured_include_test_data: true
+    keycloak_configured_eduvirt_client_id: eduVirt
+    vm_template_created_template_creation_timeout: 45
   roles:
     - setup_storage
     - upload_default_iso
@@ -93,3 +96,22 @@
     vm_test_data_cluster: cluster_2
   roles:
     - vm_test_data
+
+- name: Deploy eduVirt
+  hosts: engine
+  vars_files:
+    - vars/passwords.yaml
+  roles:
+    - deploy_eduvirt
+  vars:
+    deploy_eduvirt_keycloak_client_secret: "{{ _keycloak_configured_eduvirt_client_secret.clientsecret_info.value }}"
+    deploy_eduvirt_mail_host: stud.ics.p.lodz.pl
+    deploy_eduvirt_mail_username: vtest-mailer
+    # deploy_eduvirt_mail_password:
+    # deploy_eduvirt_eduvirt_db_password:
+    # deploy_eduvirt_liquibase_password:
+    # deploy_eduvirt_jws_secret:
+    deploy_ovirt_frontend_image_tag: 0.0.1-dev4
+    deploy_ovirt_backend_image_tag: 0.0.1-dev6
+    # deploy_ovirt_default_db_password:
+    deploy_ovirt_get_certificate: true
