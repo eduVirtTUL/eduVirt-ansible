@@ -1,6 +1,9 @@
 [Unit]
 Description=EduVirt Database Container
 
+[Service]
+TimeoutStartSec=480
+
 [Container]
 Label=app=eduvirt
 ContainerName=eduvirt-database
