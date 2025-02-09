@@ -1,8 +1,12 @@
 [Unit]
 Description=EduVirt Database Container
+StartLimitIntervalSec=10m
+StartLimitBurst=18
 
 [Service]
 TimeoutStartSec=480
+Restart=on-failure
+RestartSec=30
 
 [Container]
 Label=app=eduvirt

@@ -1,11 +1,12 @@
 [Unit]
 Description=EduVirt Frontend Application Container
 StartLimitIntervalSec=10m
-StartLimitBurst=10
+StartLimitBurst=18
 
 [Service]
 TimeoutStartSec=480
 Restart=on-failure
+RestartSec=30
 
 [Container]
 Label=app=eduvirt
@@ -18,7 +19,7 @@ Pull=missing
 
 HealthOnFailure=kill
 HealthCmd=wget -q --spider http://127.0.0.1/eduVirt/api/actuator/health
-HealthInterval=1m
+HealthInterval=30s
 HealthRetries=3
 HealthTimeout=20s
 

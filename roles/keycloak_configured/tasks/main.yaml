@@ -12,6 +12,9 @@
     client_id: "{{ keycloak_configured_eduvirt_client_id }}"
     public_client: false
     validate_certs: "{{ keycloak_configured_validate_certs }}"
+    attributes:
+      access.token.lifespan: 900
+      client.session.idle.timeout: 5400
     protocol_mappers:
       - config:
           access.token.claim: true
