@@ -9,7 +9,7 @@
         password: "{{ ovirt_admin_password }}"
         state: present
 
-    - name: Create first cluster
+    - name: Create cluster
       ovirt.ovirt.ovirt_cluster:
         auth: "{{ ovirt_auth }}"
         data_center: "{{ setup_cluster_datacenter }}"
