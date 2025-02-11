@@ -21,7 +21,6 @@
         auth: "{{ ovirt_auth }}"
         timeout: 1800 # 30 min
         reboot_after_installation: false
-      timeout: 1800 # 30 min, has to be set in both places otherwise it breaks for some undocumented reason
       with_items:
         - "{{ hosts_added_hosts }}"
       register: _add_hosts
