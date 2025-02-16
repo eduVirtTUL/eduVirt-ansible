@@ -6,11 +6,9 @@
       Content-Type: application/x-www-form-urlencoded
     body:
       client_id: "{{ keycloak_configured_client_id }}"
-      # client_secret: "{{ keycloak_configured_client_secret }}"
       username: "{{ keycloak_configured_keycloak_admin_user }}"
       password: "{{ keycloak_configured_keycloak_admin_password }}"
       grant_type: password
-      # scope: openid
     body_format: form-urlencoded
     return_content: true
     validate_certs: "{{ keycloak_configured_validate_certs }}"

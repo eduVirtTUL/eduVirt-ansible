@@ -46,7 +46,7 @@ deploy_ovirt_engine_url: "https://{{ deploy_engine_host }}/ovirt-engine"
 
 #  deploy_ovirt_frontend_image_tag:
 #  deploy_ovirt_backend_image_tag:
-deploy_ovirt_database_image: docker.io/postgres:16.4-alpine
+deploy_ovirt_database_image: docker.io/postgres:16.6-alpine
 deploy_ovirt_default_db_username: postgres
 deploy_ovirt_default_db: postgres
 # deploy_ovirt_default_db_password: postgres
